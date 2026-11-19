@@ -2,691 +2,785 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Directorate | Signals Division</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ARGUS | Directorate Portal</title>
 <style>
 :root {
-  color-scheme:dark;
-  --bg:#07111c;
-  --panel:#0c1d2c;
-  --line:#244052;
-  --cyan:#68dbe8;
-  --muted:#829cae;
-  --text:#dcebf3;
+  --bg:#06111d;
+  --panel:#0b2032;
+  --panel2:#102a40;
+  --line:#24485d;
+  --cyan:#66dff5;
+  --white:#e5f4fa;
+  --muted:#89a6b7;
+  --green:#6ee0ac;
+  --red:#ff8990;
+  --gold:#e8c783;
 }
 * { box-sizing:border-box; }
 body {
   margin:0;
-  background:radial-gradient(ellipse at 85% 5%,#153149 0%,transparent 48%),var(--bg);
-  font:15px/1.55 "Segoe UI",Arial,sans-serif;
-  color:var(--text);
+  background:var(--bg);
+  color:var(--white);
+  font-family:Consolas, "Segoe UI", sans-serif;
+  font-size:14px;
 }
-body:before {
-  content:"";
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  background:linear-gradient(transparent 97%,#80c7dd08 100%);
-  background-size:100% 5px;
+button,input {
+  font:inherit;
 }
-header {
-  height:72px;
-  border-bottom:1px solid var(--line);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 30px;
-  background:#081522c9;
-}
-.brand { display:flex;gap:14px;align-items:center; }
-.sigil {
-  width:40px;height:40px;
-  border:1px solid var(--cyan);
-  transform:rotate(45deg);
-  display:grid;place-items:center;
-  box-shadow:0 0 18px #68dbe822;
-}
-.sigil span {
-  transform:rotate(-45deg);
-  font-size:22px;
-  color:var(--cyan);
-}
-small,.eyebrow {
-  font-size:10px;
-  letter-spacing:2.2px;
-  text-transform:uppercase;
-  color:var(--muted);
-}
-.brand strong { letter-spacing:3px;font-size:15px; }
-.status {
-  font-size:11px;
-  letter-spacing:1.5px;
-  color:var(--cyan);
-}
-.status:before {
-  content:"";
-  display:inline-block;
-  width:7px;height:7px;
-  background:var(--cyan);
-  border-radius:50%;
-  margin-right:10px;
-  box-shadow:0 0 10px var(--cyan);
-}
+button { cursor:pointer; }
+button:disabled { opacity:.5; cursor:not-allowed; }
 .hidden { display:none!important; }
-button { font-family:inherit; }
-button:disabled { opacity:.55;cursor:not-allowed!important; }
-
-/* Authentication */
-.auth-wrap {
-  min-height:calc(100vh - 72px);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  padding:28px;
+.small { font-size:12px; }
+.muted { color:var(--muted); }
+.mono { font-family:Consolas,monospace; }
+h1,h2,h3,p { margin-top:0; }
+h1 { font-size:23px; letter-spacing:2px; }
+h2 { font-size:19px; }
+h3 { font-size:15px; }
+a { color:var(--cyan); }
+button:focus-visible,input:focus-visible {
+  outline:2px solid var(--cyan);
+  outline-offset:2px;
 }
-.auth-panel {
-  width:100%;
-  max-width:440px;
-  border:1px solid #31576a;
-  background:linear-gradient(145deg,#10293b,#081723);
-  box-shadow:0 25px 90px #0007;
+.btn {
+  background:#12364c;
+  border:1px solid #36708b;
+  color:var(--white);
+  padding:10px 15px;
+  border-radius:4px;
 }
-.auth-heading {
-  padding:25px 30px;
-  border-bottom:1px solid var(--line);
+.btn:hover:not(:disabled) {
+  background:#1a4a64;
 }
-.auth-heading h1 {
-  margin:8px 0 0;
-  font-size:26px;
-  font-weight:400;
-  letter-spacing:2px;
+.btn.primary {
+  color:#03121b;
+  background:var(--cyan);
+  border-color:var(--cyan);
+  font-weight:700;
 }
-.auth-body { padding:30px; }
-.auth-body label {
-  display:block;
-  margin-bottom:9px;
-  color:#9eb9c9;
-  font:11px Consolas,monospace;
-  letter-spacing:1px;
+.btn.danger {
+  border-color:#96515a;
+  color:#ffd3d7;
+  background:#46232e;
 }
-.auth-body input {
-  width:100%;
-  padding:14px;
-  margin-bottom:22px;
-  border:1px solid #34586b;
-  outline:none;
-  background:#061521;
-  color:var(--text);
-  font:14px Consolas,monospace;
-}
-.auth-body input:focus { border-color:var(--cyan); }
-.primary-button {
-  width:100%;
-  padding:15px;
-  border:1px solid #4ca5b2;
-  background:#10394a;
-  color:#9af1f6;
-  letter-spacing:2px;
-  cursor:pointer;
-}
-.primary-button:hover { background:#195469; }
-.auth-error {
-  color:#f3a5a5;
-  font:12px/1.7 Consolas,monospace;
-  margin-top:18px;
-  min-height:20px;
-}
-.auth-foot {
-  border-top:1px solid var(--line);
-  padding:16px 30px;
-  color:#7895a7;
-  font:10px Consolas,monospace;
-  letter-spacing:1px;
-}
-
-/* Main portal */
-.shell {
-  display:grid;
-  grid-template-columns:230px minmax(0,1fr);
-  min-height:calc(100vh - 72px);
-}
-aside {
-  border-right:1px solid var(--line);
-  padding:32px 16px;
-  background:#09172388;
-}
-aside .eyebrow { padding:0 14px 14px; }
-nav button {
-  display:block;
-  width:100%;
-  text-align:left;
-  background:transparent;
-  color:#8daabd;
-  border:1px solid transparent;
-  padding:14px 16px;
-  margin-bottom:5px;
-  letter-spacing:1px;
+.btn.smallbtn {
   font-size:12px;
-  cursor:pointer;
+  padding:7px 10px;
 }
-nav button.active {
-  background:#143345;
-  border-color:#28596b;
-  color:#a6f2fa;
-}
-nav button:hover { border-color:#376073; }
-nav button span {
-  display:inline-block;
-  width:26px;
-  color:var(--cyan);
-}
-.asidefoot {
-  margin:40px 14px 0;
-  padding-top:22px;
-  border-top:1px solid var(--line);
-  font:11px/1.9 Consolas,monospace;
-  color:#69889b;
-}
-main {
-  padding:32px clamp(20px,4vw,64px);
-  max-width:1450px;
+input {
+  display:block;
   width:100%;
-  margin:auto;
+  background:#071827;
+  border:1px solid #35576b;
+  border-radius:4px;
+  padding:11px;
+  color:var(--white);
 }
-.topline {
-  display:flex;
-  justify-content:space-between;
-  align-items:end;
-  gap:16px;
-  margin-bottom:24px;
-}
-h1 {
-  font-weight:400;
-  font-size:clamp(24px,3vw,36px);
-  letter-spacing:1px;
-  margin:4px 0 0;
-}
-.code {
-  font:12px Consolas,monospace;
+label {
+  display:block;
+  margin:0 0 6px;
   color:var(--muted);
-}
-.dashboard {
-  display:grid;
-  grid-template-columns:minmax(0,1fr) 270px;
-  gap:18px;
-}
-.panel {
-  border:1px solid var(--line);
-  background:linear-gradient(135deg,#0d2232ee,#091824f2);
-  box-shadow:0 16px 55px #0003;
-}
-.panelhead {
-  padding:16px 20px;
-  border-bottom:1px solid var(--line);
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-}
-.panelhead strong {
   font-size:12px;
-  letter-spacing:2px;
-  font-weight:500;
-}
-.panelhead .code { font-size:10px; }
-.chat {
-  height:min(53vh,490px);
-  min-height:300px;
-  overflow:auto;
-  padding:25px;
-}
-.message {
-  max-width:690px;
-  margin-bottom:24px;
-}
-.message .who {
-  font:11px Consolas,monospace;
+  text-transform:uppercase;
   letter-spacing:1px;
-  color:var(--cyan);
-  margin-bottom:9px;
 }
-.message p {
-  margin:0;
-  color:#c8dce6;
-  line-height:1.85;
+.field { margin-bottom:16px; }
+.error { color:var(--red); }
+.success { color:var(--green); }
+.notice {
+  margin:15px 0;
+  padding:12px;
+  border:1px solid var(--line);
+  border-radius:4px;
+  background:#0b2638;
   white-space:pre-wrap;
 }
-.message.user {
-  margin-left:auto;
-  border-left:2px solid #557f93;
-  padding-left:18px;
+.notice.error { border-color:#79434b; }
+.notice.success { border-color:#35775f; }
+.card {
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:5px;
+  padding:20px;
 }
-.message.user .who { color:#a5b4c2; }
-.compose {
-  border-top:1px solid var(--line);
-  display:flex;
-  gap:12px;
-  padding:16px 20px;
-  align-items:center;
-}
-textarea {
-  resize:vertical;
-  min-height:50px;
-  max-height:160px;
-  flex:1;
-  background:#061521;
-  color:var(--text);
-  border:1px solid #2d5062;
-  padding:14px;
-  font:13px Consolas,monospace;
-  outline:none;
-}
-textarea:focus { border-color:var(--cyan); }
-button.send {
-  border:1px solid #4ca5b2;
-  background:#10394a;
-  color:#9af1f6;
-  padding:15px 18px;
-  cursor:pointer;
+.card + .card { margin-top:16px; }
+.tag {
+  display:inline-block;
+  padding:4px 8px;
   font-size:11px;
+  border:1px solid var(--line);
+  border-radius:3px;
   letter-spacing:1px;
 }
-button.send:hover { background:#195469; }
-.sidecards {
-  display:grid;
-  gap:18px;
-  align-content:start;
+.tag.active { color:var(--green); border-color:#35775f; }
+.tag.inactive { color:var(--red); border-color:#79434b; }
+.topline {
+  height:4px;
+  background:linear-gradient(90deg,#1b657e,var(--cyan),#1b657e);
 }
-.metric { padding:22px; }
-.metric h3 {
-  font-weight:500;
-  font-size:12px;
-  letter-spacing:1.7px;
-  margin:8px 0 15px;
+#loginScreen {
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
 }
-.metric p {
-  font-size:12px;
-  color:#a2bbcb;
-  margin:0;
+.loginbox { width:100%; max-width:430px; }
+.loginhead {
+  padding:25px;
+  border:1px solid var(--line);
+  background:var(--panel);
+  margin-bottom:12px;
 }
-.diagram {
-  height:120px;
-  display:grid;
-  place-items:center;
-  position:relative;
-  overflow:hidden;
-  background:radial-gradient(circle,#2c7b8750,transparent 55%);
+.logo {
+  color:var(--cyan);
+  font-size:36px;
+  letter-spacing:7px;
+  font-weight:800;
 }
-.rings {
-  width:90px;height:90px;
-  border:1px solid #5ec9d999;
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  box-shadow:0 0 0 20px #58c6d40a,0 0 0 38px #58c6d40a;
-  animation:pulse 5s ease-in-out infinite;
+.subtitle {
+  font-size:11px;
+  letter-spacing:2px;
+  color:var(--muted);
+  margin-top:9px;
 }
-.rings:after {
-  content:"◇";
-  font-size:45px;
+.loginbody {
+  padding:25px;
+  border:1px solid var(--line);
+  background:var(--panel);
+}
+#portal {
+  min-height:100vh;
+  display:flex;
+}
+aside {
+  width:255px;
+  flex-shrink:0;
+  border-right:1px solid var(--line);
+  background:#081a29;
+  display:flex;
+  flex-direction:column;
+}
+.sidebrand {
+  padding:25px 20px;
+  border-bottom:1px solid var(--line);
+}
+.sidebrand .logo { font-size:29px; }
+.nav {
+  padding:18px 10px;
+  flex:1;
+}
+.navbutton {
+  width:100%;
+  text-align:left;
+  border:1px solid transparent;
+  color:var(--muted);
+  background:transparent;
+  padding:13px 14px;
+  margin-bottom:5px;
+  border-radius:4px;
+  letter-spacing:.5px;
+}
+.navbutton:hover,.navbutton.selected {
+  background:var(--panel2);
+  border-color:var(--line);
   color:var(--cyan);
 }
-@keyframes pulse {
-  50% {
-    box-shadow:0 0 0 15px #58c6d417,0 0 0 34px #58c6d405;
-  }
+.sidefooter {
+  padding:16px;
+  border-top:1px solid var(--line);
 }
-.notice {
-  border-left:2px solid #cba96e;
-  padding:9px 12px;
-  background:#7d5b2510;
-  color:#c7b69b;
-  font:11px/1.7 Consolas,monospace;
+main {
+  flex:1;
+  min-width:0;
 }
-.placeholder {
-  padding:40px 25px;
-  color:#9bb5c4;
-  line-height:1.9;
-}
-.placeholder h2 {
-  font-weight:400;
-  color:#e2f3fa;
-}
-footer {
-  margin-top:24px;
-  display:flex;
-  justify-content:space-between;
-  color:#658294;
-  font:10px Consolas,monospace;
-  letter-spacing:1px;
-}
-.account {
+header {
+  padding:19px 30px;
+  border-bottom:1px solid var(--line);
   display:flex;
   align-items:center;
+  justify-content:space-between;
   gap:15px;
-  font:11px Consolas,monospace;
+  flex-wrap:wrap;
 }
-.account-name { color:#a6f2fa; }
-.signout {
-  border:1px solid #376073;
-  color:#a2c8d6;
-  background:transparent;
-  padding:8px 12px;
-  cursor:pointer;
-  font-size:10px;
+.content {
+  max-width:1120px;
+  padding:30px;
+  margin:0 auto;
+}
+.eyebrow {
+  color:var(--cyan);
+  font-size:11px;
+  letter-spacing:2px;
+  margin-bottom:10px;
+}
+.section { display:none; }
+.section.visible { display:block; }
+.grid {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:15px;
+}
+.statvalue {
+  font-size:29px;
+  color:var(--cyan);
+  margin:12px 0 4px;
+}
+.toolbar {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:18px;
+}
+.tablewrap { overflow-x:auto; }
+table {
+  width:100%;
+  border-collapse:collapse;
+}
+th,td {
+  padding:13px 12px;
+  text-align:left;
+  border-bottom:1px solid var(--line);
+}
+th {
+  color:var(--muted);
+  font-size:11px;
+  text-transform:uppercase;
   letter-spacing:1px;
 }
-.signout:hover { background:#143345; }
-@media(max-width:900px) {
-  .dashboard { grid-template-columns:1fr; }
-  .sidecards { grid-template-columns:1fr 1fr; }
-  .shell { grid-template-columns:180px minmax(0,1fr); }
+.actions {
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
 }
-@media(max-width:650px) {
-  header { padding:0 16px; }
-  .status { font-size:0; }
-  .status:before { margin:0; }
-  .shell { display:block; }
-  aside {
-    border-right:0;
-    border-bottom:1px solid var(--line);
-    padding:10px;
+.two-col {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+.panel-title {
+  color:var(--cyan);
+  letter-spacing:1px;
+  margin-bottom:15px;
+}
+.chatlog {
+  min-height:260px;
+  max-height:420px;
+  overflow-y:auto;
+  padding:15px;
+  border:1px solid var(--line);
+  background:#061522;
+  margin-bottom:12px;
+}
+.message {
+  margin:0 0 15px;
+  line-height:1.6;
+  white-space:pre-wrap;
+}
+.message strong {
+  display:block;
+  color:var(--cyan);
+  margin-bottom:3px;
+}
+.chatrow {
+  display:flex;
+  gap:10px;
+}
+.chatrow input { flex:1; }
+dialog {
+  width:min(480px,calc(100% - 24px));
+  background:var(--panel);
+  color:var(--white);
+  border:1px solid #4b859c;
+  border-radius:6px;
+  padding:25px;
+}
+dialog::backdrop { background:#000b; }
+.dialog-actions {
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+  margin-top:22px;
+}
+@media(max-width:850px) {
+  #portal { flex-direction:column; }
+  aside { width:100%; }
+  .sidebrand { padding:12px 18px; }
+  .nav {
+    display:flex;
+    overflow-x:auto;
+    padding:8px;
   }
-  aside .eyebrow,.asidefoot { display:none; }
-  nav { display:flex;overflow:auto; }
-  nav button {
+  .navbutton {
+    width:auto;
     white-space:nowrap;
-    padding:12px;
-    font-size:10px;
+    margin:0 4px 0 0;
   }
-  main { padding:24px 14px; }
-  .topline .code { display:none; }
-  .sidecards { grid-template-columns:1fr; }
-  .chat { min-height:330px; }
-  .account { gap:7px; }
-  .account-name { font-size:9px; }
-  .signout { padding:7px; }
+  .sidefooter { display:none; }
+  header { padding:15px; }
+  .content { padding:18px; }
+  .grid,.two-col { grid-template-columns:1fr; }
 }
 </style>
 </head>
 <body>
+<div class="topline"></div>
 
-<header>
-  <div class="brand">
-    <div class="sigil"><span>⌁</span></div>
-    <div>
-      <strong>THE DIRECTORATE</strong>
-      <div class="eyebrow">Signals Division / Internal Network</div>
+<div id="loginScreen">
+  <div class="loginbox">
+    <div class="loginhead">
+      <div class="logo">ARGUS</div>
+      <div class="subtitle">AGENCY RESEARCH &amp; GUIDANCE UTILITY SYSTEM</div>
+      <p class="muted small" style="margin-top:22px;margin-bottom:0">
+        THE DIRECTORATE / SIGNALS DIVISION
+      </p>
     </div>
-  </div>
-  <div class="status" id="systemStatus">SYSTEM LINK ESTABLISHED</div>
-  <div class="account hidden" id="accountArea">
-    <span class="account-name" id="accountName"></span>
-    <button class="signout" id="signoutButton">SIGN OUT</button>
-  </div>
-</header>
-
-<section id="authScreen" class="auth-wrap">
-  <div class="auth-panel">
-    <div class="auth-heading">
-      <div class="eyebrow">Directorate / Identity Verification</div>
-      <h1>Secure Access</h1>
-    </div>
-    <div class="auth-body">
+    <div class="loginbody">
+      <div class="eyebrow">SECURE ACCESS TERMINAL</div>
+      <h2>Identity Verification</h2>
       <form id="loginForm">
-        <label for="username">OPERATIVE IDENTIFIER</label>
-        <input
-          id="username"
-          type="text"
-          autocomplete="username"
-          required
-          placeholder="USERNAME"
-        >
-        <label for="password">ACCESS PASSPHRASE</label>
-        <input
-          id="password"
-          type="password"
-          autocomplete="current-password"
-          required
-          placeholder="PASSWORD"
-        >
-        <button class="primary-button" id="loginButton" type="submit">
+        <div class="field">
+          <label for="username">Operative identifier</label>
+          <input id="username" autocomplete="username" required>
+        </div>
+        <div class="field">
+          <label for="password">Access phrase</label>
+          <input id="password" type="password"
+                 autocomplete="current-password" required>
+        </div>
+        <button class="btn primary" type="submit" id="loginButton">
           AUTHENTICATE
         </button>
-        <div class="auth-error" id="loginError" role="alert"></div>
       </form>
+      <div id="loginMessage" role="status"></div>
+      <p class="muted small" style="margin-top:22px">
+        Unauthorized access is discouraged. Strongly.
+      </p>
     </div>
-    <div class="auth-foot">
-      SIGNALS DIVISION / AUTHORIZED PERSONNEL ONLY
-    </div>
+    <p class="muted small" style="text-align:center;margin-top:14px">
+      ARGUS BUILD 0.6.0 / DIRECTORATE INTERNAL
+    </p>
   </div>
-</section>
+</div>
 
-<div id="portal" class="shell hidden">
+<div id="portal" class="hidden">
   <aside>
-    <div class="eyebrow">Workstation / 01</div>
-    <nav>
-      <button class="active" data-page="communications">
-        <span>◈</span> COMMUNICATIONS
+    <div class="sidebrand">
+      <div class="logo">ARGUS</div>
+      <div class="subtitle">DIRECTORATE OPERATIONS</div>
+    </div>
+    <nav class="nav" aria-label="Main navigation">
+      <button class="navbutton selected" data-page="communications">
+        ◈ Communications
       </button>
-      <button data-page="assignments">
-        <span>◇</span> ASSIGNMENTS
+      <button class="navbutton" data-page="assignments">
+        ◇ Assignments
       </button>
-      <button data-page="archive">
-        <span>▤</span> INTELLIGENCE ARCHIVE
+      <button class="navbutton" data-page="archive">
+        ▣ Intelligence Archive
       </button>
-      <button data-page="systems">
-        <span>⌘</span> SYSTEMS
+      <button class="navbutton" data-page="systems">
+        ⚙ Systems
+      </button>
+      <button class="navbutton hidden" id="personnelNav"
+              data-page="personnel">
+        ⛨ Personnel
       </button>
     </nav>
-    <div class="asidefoot">
-      DIRECTORATE / INTERNAL<br>
-      CHANNEL: AUTHENTICATED<br>
-      ENCRYPTION: HTTPS<br>
-      BUILD: 0.4.0
+    <div class="sidefooter">
+      <div class="muted small">SECURE CHANNEL</div>
+      <div class="success small">● AUTHENTICATED</div>
+      <div class="muted small" style="margin-top:12px">
+        BUILD 0.6.0
+      </div>
     </div>
   </aside>
 
   <main>
-    <div class="topline">
+    <header>
       <div>
-        <div class="eyebrow">Operations / Technical Advisory</div>
-        <h1 id="heading">Communications</h1>
+        <div class="eyebrow">THE DIRECTORATE / SIGNALS DIVISION</div>
+        <strong id="headerTitle">COMMUNICATIONS</strong>
       </div>
-      <div class="code">NODE SD-01 / AUTHENTICATED TERMINAL</div>
-    </div>
-
-    <div id="communications" class="dashboard">
-      <section class="panel">
-        <div class="panelhead">
-          <strong>ARGUS / ADVISORY CHANNEL</strong>
-          <span class="code">● INTERFACE DEMONSTRATION</span>
+      <div style="display:flex;align-items:center;gap:15px">
+        <div style="text-align:right">
+          <div id="currentUser">OPERATIVE</div>
+          <div class="muted small" id="currentRole">CLEARANCE PENDING</div>
         </div>
+        <button class="btn smallbtn" id="signoutButton">
+          SIGN OUT
+        </button>
+      </div>
+    </header>
 
-        <div class="chat" id="chat">
-          <div class="message">
-            <div class="who">A.R.G.U.S. // INITIALIZED</div>
-            <p>Welcome to the Directorate.
+    <div class="content">
+      <div id="globalMessage" role="status"></div>
 
-Your workstation credentials have been verified.
-
-No active assignments have been issued.
-
-I remain available for technical consultation. Do try not to dismantle anything essential before we begin.</p>
+      <section class="section visible" id="page-communications">
+        <div class="eyebrow">CHANNEL 01 / ENCRYPTED COMMUNICATIONS</div>
+        <h1>ARGUS Communications</h1>
+        <p class="muted">
+          Agency Research &amp; Guidance Utility System
+        </p>
+        <div class="card">
+          <div class="panel-title">A.R.G.U.S. / TERMINAL</div>
+          <div class="chatlog" id="chatLog" aria-live="polite">
+            <div class="message">
+              <strong>ARGUS</strong>
+              Identity confirmed. Communications terminal online.
+              Operational AI connection is pending authorization.
+              I trust you find the temporary silence reassuring.
+            </div>
           </div>
-        </div>
-
-        <div class="compose">
-          <textarea
-            id="input"
-            placeholder="ENTER TRANSMISSION..."
-            aria-label="Message to ARGUS"
-          ></textarea>
-          <button class="send" id="send">TRANSMIT ↗</button>
+          <form class="chatrow" id="chatForm">
+            <input id="chatInput" placeholder="Enter message..."
+                   maxlength="3000" autocomplete="off">
+            <button class="btn primary" type="submit">TRANSMIT</button>
+          </form>
+          <p class="muted small" style="margin-top:12px">
+            DEMONSTRATION MODE — Live AI communications are not yet enabled.
+          </p>
         </div>
       </section>
 
-      <div class="sidecards">
-        <section class="panel">
-          <div class="panelhead">
-            <strong>ARGUS CORE</strong>
-            <span class="code">A-01</span>
-          </div>
-          <div class="diagram">
-            <div class="rings"></div>
-          </div>
-          <div class="metric">
-            <div class="eyebrow">
-              Agency Research &amp; Guidance Utility System
-            </div>
-            <h3>ADVISORY SYSTEM / STANDBY</h3>
-            <p>Intelligence analysis and technical consultation interface.</p>
-          </div>
-        </section>
-
-        <section class="panel">
-          <div class="panelhead">
-            <strong>OPERATIONAL STATUS</strong>
-          </div>
-          <div class="metric">
-            <div class="eyebrow">Assignment queue</div>
-            <h3>NO ACTIVE DIRECTIVES</h3>
-            <p>Await further instruction from Signals Division.</p>
-          </div>
-        </section>
-
-        <div class="notice">
-          PREVIEW ENVIRONMENT. LIVE AI COMMUNICATIONS NOT YET ENABLED.
+      <section class="section" id="page-assignments">
+        <div class="eyebrow">CHANNEL 02 / FIELD OPERATIONS</div>
+        <h1>Assignments</h1>
+        <div class="card">
+          <h3>Mission queue</h3>
+          <p class="muted">
+            No missions have been issued. The Directorate is
+            preparing the first operational briefing.
+          </p>
+          <span class="tag">AWAITING ASSIGNMENT</span>
         </div>
-      </div>
-    </div>
+      </section>
 
-    <section id="other" class="panel hidden">
-      <div class="panelhead">
-        <strong id="otherlabel">MODULE</strong>
-        <span class="code">ACCESS / PREVIEW</span>
-      </div>
-      <div class="placeholder">
-        <h2 id="othertitle">Module unavailable</h2>
-        <p id="otherdesc">
-          This module is awaiting commissioning.
+      <section class="section" id="page-archive">
+        <div class="eyebrow">CHANNEL 03 / INTELLIGENCE STORAGE</div>
+        <h1>Intelligence Archive</h1>
+        <div class="card">
+          <h3>Archive index</h3>
+          <p class="muted">
+            No field reports have been filed.
+            Future mission records will appear here.
+          </p>
+        </div>
+      </section>
+
+      <section class="section" id="page-systems">
+        <div class="eyebrow">CHANNEL 04 / SYSTEM DIAGNOSTICS</div>
+        <h1>Systems</h1>
+        <div class="grid">
+          <div class="card">
+            <div class="muted small">PORTAL VERSION</div>
+            <div class="statvalue">0.6.0</div>
+            <div class="small">FRONTEND</div>
+          </div>
+          <div class="card">
+            <div class="muted small">AUTHENTICATION</div>
+            <div class="statvalue">ONLINE</div>
+            <div class="small">SESSION ACTIVE</div>
+          </div>
+          <div class="card">
+            <div class="muted small">AI COMMUNICATIONS</div>
+            <div class="statvalue" style="font-size:20px">PENDING</div>
+            <div class="small">DEMO MODE</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="page-personnel">
+        <div class="eyebrow">DIRECTOR CLEARANCE / PERSONNEL CONTROL</div>
+        <h1>Agent Administration</h1>
+        <p class="muted">
+          Directorate personnel records. Restricted to authorized Directors.
         </p>
-      </div>
-    </section>
 
-    <footer>
-      <span>DIRECTORATE SIGNALS DIVISION / INTERNAL USE</span>
-      <span>ARGUS v0.4 / AUTHENTICATED PORTAL</span>
-    </footer>
+        <div class="grid" style="margin-bottom:20px">
+          <div class="card">
+            <div class="muted small">TOTAL AGENTS</div>
+            <div class="statvalue" id="totalAgents">—</div>
+          </div>
+          <div class="card">
+            <div class="muted small">ACTIVE AGENTS</div>
+            <div class="statvalue" id="activeAgents">—</div>
+          </div>
+          <div class="card">
+            <div class="muted small">INACTIVE AGENTS</div>
+            <div class="statvalue" id="inactiveAgents">—</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="toolbar">
+            <h2 style="margin:0">Personnel Roster</h2>
+            <div class="actions">
+              <button class="btn" id="refreshAgents">
+                REFRESH
+              </button>
+              <button class="btn primary" id="newAgent">
+                + RECRUIT AGENT
+              </button>
+            </div>
+          </div>
+
+          <div id="personnelMessage" role="status"></div>
+
+          <div class="tablewrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Username</th>
+                  <th>Display name</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="agentRows">
+                <tr><td colspan="4" class="muted">
+                  Awaiting personnel records...
+                </td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <p class="muted small" style="margin-top:18px">
+          Deactivating an Agent immediately revokes existing sessions.
+          Resetting a password also signs that Agent out.
+        </p>
+      </section>
+    </div>
   </main>
 </div>
 
+<dialog id="createDialog">
+  <form id="createForm">
+    <div class="eyebrow">DIRECTORATE / RECRUITMENT</div>
+    <h2>Recruit New Agent</h2>
+    <p class="muted small">
+      Create an account with Agent-level clearance.
+    </p>
+    <div class="field">
+      <label for="agentUsername">Agent username</label>
+      <input id="agentUsername" required minlength="3" maxlength="32"
+             pattern="[a-z][a-z0-9_-]{2,31}"
+             autocomplete="off" spellcheck="false">
+    </div>
+    <div class="field">
+      <label for="agentDisplayName">Display name / codename</label>
+      <input id="agentDisplayName" required maxlength="80">
+    </div>
+    <div class="field">
+      <label for="agentPassword">Initial password</label>
+      <input id="agentPassword" type="password" required
+             minlength="14" maxlength="256" autocomplete="new-password">
+    </div>
+    <div id="createMessage" role="status"></div>
+    <div class="dialog-actions">
+      <button type="button" class="btn" id="cancelCreate">
+        CANCEL
+      </button>
+      <button type="submit" class="btn primary" id="submitCreate">
+        CREATE AGENT
+      </button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="resetDialog">
+  <form id="resetForm">
+    <div class="eyebrow">DIRECTORATE / ACCESS CONTROL</div>
+    <h2>Reset Agent Password</h2>
+    <p class="muted" id="resetAgentLabel"></p>
+    <div class="field">
+      <label for="resetPassword">New password (14+ characters)</label>
+      <input id="resetPassword" type="password" required
+             minlength="14" maxlength="256" autocomplete="new-password">
+    </div>
+    <p class="muted small">
+      Existing sessions will be revoked.
+    </p>
+    <div id="resetMessage" role="status"></div>
+    <div class="dialog-actions">
+      <button type="button" class="btn" id="cancelReset">
+        CANCEL
+      </button>
+      <button type="submit" class="btn primary" id="submitReset">
+        RESET PASSWORD
+      </button>
+    </div>
+  </form>
+</dialog>
+
 <script>
+"use strict";
+
 const API = "https://argus-api.ryan-matusch.workers.dev";
 const SESSION_KEY = "argus_session_v04";
 
-const authScreen = document.getElementById("authScreen");
-const portal = document.getElementById("portal");
-const accountArea = document.getElementById("accountArea");
-const accountName = document.getElementById("accountName");
-const loginError = document.getElementById("loginError");
-const loginButton = document.getElementById("loginButton");
-
 let sessionToken = sessionStorage.getItem(SESSION_KEY);
+let currentUser = null;
+let agents = [];
+let resetTarget = null;
+
+const $ = id => document.getElementById(id);
+
+function setNotice(id, message, type = "") {
+  const element = $(id);
+  element.textContent = message || "";
+  element.className = message ? "notice " + type : "";
+}
 
 function showLogin() {
-  authScreen.classList.remove("hidden");
-  portal.classList.add("hidden");
-  accountArea.classList.add("hidden");
-  document.getElementById("systemStatus").classList.remove("hidden");
+  $("portal").classList.add("hidden");
+  $("loginScreen").classList.remove("hidden");
 }
 
 function showPortal(user) {
-  authScreen.classList.add("hidden");
-  portal.classList.remove("hidden");
-  accountArea.classList.remove("hidden");
-  document.getElementById("systemStatus").classList.add("hidden");
+  currentUser = user;
+  $("loginScreen").classList.add("hidden");
+  $("portal").classList.remove("hidden");
 
-  const role = String(user.role || "agent").toUpperCase();
-  const name = String(user.display_name || user.username || "OPERATIVE");
+  $("currentUser").textContent =
+    (user.display_name || user.username).toUpperCase();
+  $("currentRole").textContent =
+    user.role.toUpperCase() + " CLEARANCE";
 
-  accountName.textContent = role + " / " + name;
+  $("personnelNav").classList.toggle(
+    "hidden", user.role !== "director"
+  );
+
+  navigate("communications");
 }
 
 function clearSession() {
   sessionToken = null;
+  currentUser = null;
+  agents = [];
   sessionStorage.removeItem(SESSION_KEY);
   showLogin();
 }
 
 async function apiRequest(path, options = {}) {
-  const response = await fetch(API + path, {
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...(options.headers || {})
-    },
-    cache: "no-store"
-  });
+  const headers = {
+    "Content-Type": "application/json",
+    ...(options.headers || {})
+  };
 
-  const data = await response.json();
+  if (sessionToken) {
+    headers.Authorization = "Bearer " + sessionToken;
+  }
+
+  let response;
+  try {
+    response = await fetch(API + path, {
+      ...options,
+      headers,
+      cache: "no-store"
+    });
+  } catch {
+    throw new Error("Cannot contact ARGUS. Check your connection.");
+  }
+
+  let data;
+  try {
+    data = await response.json();
+  } catch {
+    throw new Error("ARGUS returned an unreadable response.");
+  }
+
+  if (response.status === 401 && path !== "/auth/login") {
+    clearSession();
+    throw new Error("Session expired. Please authenticate again.");
+  }
 
   if (!response.ok) {
-    throw new Error(data.error || "ARGUS request failed");
+    throw new Error(data.error || "ARGUS request failed.");
   }
 
   return data;
 }
 
-document.getElementById("loginForm").addEventListener("submit", async event => {
+function navigate(page) {
+  if (page === "personnel" &&
+      (!currentUser || currentUser.role !== "director")) {
+    return;
+  }
+
+  document.querySelectorAll(".section").forEach(el => {
+    el.classList.toggle("visible", el.id === "page-" + page);
+  });
+
+  document.querySelectorAll(".navbutton").forEach(el => {
+    el.classList.toggle("selected", el.dataset.page === page);
+  });
+
+  const titles = {
+    communications: "COMMUNICATIONS",
+    assignments: "ASSIGNMENTS",
+    archive: "INTELLIGENCE ARCHIVE",
+    systems: "SYSTEMS",
+    personnel: "PERSONNEL CONTROL"
+  };
+
+  $("headerTitle").textContent = titles[page] || "ARGUS";
+  setNotice("globalMessage", "");
+
+  if (page === "personnel") loadAgents();
+}
+
+document.querySelectorAll(".navbutton").forEach(button => {
+  button.addEventListener("click", () => {
+    navigate(button.dataset.page);
+  });
+});
+
+$("loginForm").addEventListener("submit", async event => {
   event.preventDefault();
-
-  loginError.textContent = "";
-  loginButton.disabled = true;
-  loginButton.textContent = "VERIFYING...";
-
-  const username = document.getElementById("username").value.trim();
-  const password = document.getElementById("password").value;
+  setNotice("loginMessage", "");
+  $("loginButton").disabled = true;
 
   try {
     const result = await apiRequest("/auth/login", {
       method: "POST",
-      body: JSON.stringify({ username, password })
+      body: JSON.stringify({
+        username: $("username").value.trim().toLowerCase(),
+        password: $("password").value
+      })
     });
-
-    if (!result.token || !result.user) {
-      throw new Error("Invalid authentication response");
-    }
 
     sessionToken = result.token;
     sessionStorage.setItem(SESSION_KEY, sessionToken);
-
-    document.getElementById("password").value = "";
+    $("password").value = "";
     showPortal(result.user);
   } catch (error) {
-    loginError.textContent =
-      error instanceof TypeError
-        ? "Cannot contact ARGUS. Check network connection."
-        : error.message;
+    setNotice("loginMessage", error.message, "error");
   } finally {
-    loginButton.disabled = false;
-    loginButton.textContent = "AUTHENTICATE";
+    $("loginButton").disabled = false;
   }
 });
 
-document.getElementById("signoutButton").addEventListener("click", async () => {
+$("signoutButton").addEventListener("click", async () => {
   const token = sessionToken;
   clearSession();
 
   if (token) {
     try {
-      await apiRequest("/auth/logout", {
+      await fetch(API + "/auth/logout", {
         method: "POST",
-        headers: { Authorization: "Bearer " + token }
+        headers: {
+          Authorization: "Bearer " + token,
+          "Content-Type": "application/json"
+        }
       });
     } catch {
-      // Local session has already been cleared.
+      // Local session is already cleared.
     }
   }
 });
@@ -699,100 +793,272 @@ async function restoreSession() {
 
   try {
     const result = await apiRequest("/auth/me", {
-      method: "GET",
-      headers: { Authorization: "Bearer " + sessionToken }
+      method: "GET"
     });
-
-    if (!result.user) throw new Error("Invalid session");
     showPortal(result.user);
   } catch {
     clearSession();
   }
 }
 
-const labels = {
-  communications: ["Communications", "", ""],
-  assignments: [
-    "Assignments",
-    "ASSIGNMENT CONTROL",
-    "No active assignments have been issued. This module will eventually contain mission briefings, evidence and objectives."
-  ],
-  archive: [
-    "Intelligence Archive",
-    "INTELLIGENCE ARCHIVE",
-    "Case files, intercepted transmissions and recovered documents will appear here."
-  ],
-  systems: [
-    "Systems",
-    "SYSTEM DIAGNOSTICS",
-    "Workstation provisioning, technical references and account diagnostics will appear here."
-  ]
-};
+$("chatForm").addEventListener("submit", event => {
+  event.preventDefault();
+  const input = $("chatInput");
+  const message = input.value.trim();
+  if (!message) return;
 
-document.querySelectorAll("nav button").forEach(button => {
-  button.addEventListener("click", () => {
-    document.querySelectorAll("nav button").forEach(b => {
-      b.classList.remove("active");
-    });
-
-    button.classList.add("active");
-    const key = button.dataset.page;
-
-    document.getElementById("heading").textContent = labels[key][0];
-
-    document.getElementById("communications").classList.toggle(
-      "hidden", key !== "communications"
-    );
-    document.getElementById("other").classList.toggle(
-      "hidden", key === "communications"
-    );
-
-    if (key !== "communications") {
-      document.getElementById("otherlabel").textContent = labels[key][1];
-      document.getElementById("othertitle").textContent = labels[key][0];
-      document.getElementById("otherdesc").textContent = labels[key][2];
-    }
-  });
+  appendChat("OPERATIVE", message);
+  appendChat(
+    "ARGUS",
+    "Message received. Live AI communications have not yet " +
+    "been activated on this terminal. The Directorate " +
+    "appreciates your patience. Presumably."
+  );
+  input.value = "";
 });
 
-const input = document.getElementById("input");
-const chat = document.getElementById("chat");
+function appendChat(sender, message) {
+  const div = document.createElement("div");
+  div.className = "message";
 
-function addMessage(who, content, user = false) {
-  const el = document.createElement("div");
-  el.className = "message" + (user ? " user" : "");
+  const heading = document.createElement("strong");
+  heading.textContent = sender;
 
-  const label = document.createElement("div");
-  label.className = "who";
-  label.textContent = who;
+  const content = document.createElement("span");
+  content.textContent = message;
 
-  const p = document.createElement("p");
-  p.textContent = content;
-
-  el.append(label, p);
-  chat.appendChild(el);
-  chat.scrollTop = chat.scrollHeight;
+  div.append(heading, content);
+  $("chatLog").appendChild(div);
+  $("chatLog").scrollTop = $("chatLog").scrollHeight;
 }
 
-function send() {
-  const value = input.value.trim();
-  if (!value) return;
+// PERSONNEL ADMINISTRATION
 
-  addMessage("OPERATIVE // OUTGOING", value, true);
-  input.value = "";
+async function loadAgents() {
+  if (!currentUser || currentUser.role !== "director") return;
 
-  addMessage(
-    "SYSTEM // NOTICE",
-    "ARGUS communications are not yet enabled in this version. Authentication is operational."
-  );
+  $("agentRows").replaceChildren();
+  const loadingRow = document.createElement("tr");
+  const loadingCell = document.createElement("td");
+  loadingCell.colSpan = 4;
+  loadingCell.textContent = "Retrieving personnel records...";
+  loadingRow.appendChild(loadingCell);
+  $("agentRows").appendChild(loadingRow);
+
+  try {
+    const result = await apiRequest("/agents", {
+      method: "GET"
+    });
+    agents = result.agents || [];
+    renderAgents();
+    setNotice("personnelMessage", "");
+  } catch (error) {
+    $("agentRows").replaceChildren();
+    setNotice("personnelMessage", error.message, "error");
+  }
 }
 
-document.getElementById("send").addEventListener("click", send);
+function renderAgents() {
+  $("totalAgents").textContent = agents.length;
+  $("activeAgents").textContent =
+    agents.filter(a => Number(a.active) === 1).length;
+  $("inactiveAgents").textContent =
+    agents.filter(a => Number(a.active) !== 1).length;
 
-input.addEventListener("keydown", event => {
-  if (event.key === "Enter" && !event.shiftKey) {
-    event.preventDefault();
-    send();
+  const tbody = $("agentRows");
+  tbody.replaceChildren();
+
+  if (!agents.length) {
+    const row = document.createElement("tr");
+    const cell = document.createElement("td");
+    cell.colSpan = 4;
+    cell.textContent = "No Agents recruited.";
+    cell.className = "muted";
+    row.appendChild(cell);
+    tbody.appendChild(row);
+    return;
+  }
+
+  agents.forEach(agent => {
+    const row = document.createElement("tr");
+
+    const username = document.createElement("td");
+    username.textContent = agent.username;
+
+    const displayName = document.createElement("td");
+    displayName.textContent = agent.display_name;
+
+    const status = document.createElement("td");
+    const tag = document.createElement("span");
+    const active = Number(agent.active) === 1;
+    tag.className = "tag " + (active ? "active" : "inactive");
+    tag.textContent = active ? "ACTIVE" : "INACTIVE";
+    status.appendChild(tag);
+
+    const actions = document.createElement("td");
+    const group = document.createElement("div");
+    group.className = "actions";
+
+    const reset = document.createElement("button");
+    reset.className = "btn smallbtn";
+    reset.textContent = "RESET PASSWORD";
+    reset.addEventListener("click", () => openReset(agent));
+
+    const toggle = document.createElement("button");
+    toggle.className = "btn smallbtn" + (active ? " danger" : "");
+    toggle.textContent = active ? "DEACTIVATE" : "ACTIVATE";
+    toggle.addEventListener("click", () => toggleAgent(agent));
+
+    group.append(reset, toggle);
+    actions.appendChild(group);
+    row.append(username, displayName, status, actions);
+    tbody.appendChild(row);
+  });
+}
+
+$("refreshAgents").addEventListener("click", loadAgents);
+
+$("newAgent").addEventListener("click", () => {
+  $("createForm").reset();
+  setNotice("createMessage", "");
+  $("createDialog").showModal();
+});
+
+$("cancelCreate").addEventListener("click", () => {
+  $("createDialog").close();
+});
+
+$("createForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  setNotice("createMessage", "");
+
+  const username = $("agentUsername").value.trim().toLowerCase();
+  const displayName = $("agentDisplayName").value.trim();
+  const password = $("agentPassword").value;
+
+  if (!/^[a-z][a-z0-9_-]{2,31}$/.test(username)) {
+    setNotice("createMessage", "Invalid username.", "error");
+    return;
+  }
+
+  if (!displayName || password.length < 14) {
+    setNotice(
+      "createMessage",
+      "Display name and password (14+ characters) required.",
+      "error"
+    );
+    return;
+  }
+
+  $("submitCreate").disabled = true;
+
+  try {
+    await apiRequest("/agents", {
+      method: "POST",
+      body: JSON.stringify({
+        username,
+        display_name: displayName,
+        password
+      })
+    });
+
+    $("createForm").reset();
+    $("createDialog").close();
+    await loadAgents();
+    setNotice(
+      "personnelMessage",
+      "Agent " + username + " successfully recruited.",
+      "success"
+    );
+  } catch (error) {
+    setNotice("createMessage", error.message, "error");
+  } finally {
+    $("submitCreate").disabled = false;
+  }
+});
+
+async function toggleAgent(agent) {
+  const active = Number(agent.active) === 1;
+  const action = active ? "deactivate" : "activate";
+
+  if (!confirm(
+    "Are you sure you want to " + action +
+    " Agent " + agent.username + "?"
+  )) return;
+
+  try {
+    await apiRequest("/agents/" + encodeURIComponent(agent.id), {
+      method: "PATCH",
+      body: JSON.stringify({ active: !active })
+    });
+
+    await loadAgents();
+    setNotice(
+      "personnelMessage",
+      "Agent " + agent.username + " " +
+      (active ? "deactivated." : "activated."),
+      "success"
+    );
+  } catch (error) {
+    setNotice("personnelMessage", error.message, "error");
+  }
+}
+
+function openReset(agent) {
+  resetTarget = agent;
+  $("resetForm").reset();
+  $("resetAgentLabel").textContent =
+    "Agent: " + agent.username;
+  setNotice("resetMessage", "");
+  $("resetDialog").showModal();
+}
+
+$("cancelReset").addEventListener("click", () => {
+  $("resetDialog").close();
+  resetTarget = null;
+});
+
+$("resetForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  if (!resetTarget) return;
+
+  const password = $("resetPassword").value;
+  if (password.length < 14) {
+    setNotice(
+      "resetMessage",
+      "Password must contain at least 14 characters.",
+      "error"
+    );
+    return;
+  }
+
+  $("submitReset").disabled = true;
+  const agentName = resetTarget.username;
+
+  try {
+    await apiRequest(
+      "/agents/" + encodeURIComponent(resetTarget.id) +
+      "/reset-password",
+      {
+        method: "POST",
+        body: JSON.stringify({ password })
+      }
+    );
+
+    $("resetForm").reset();
+    $("resetDialog").close();
+    resetTarget = null;
+
+    setNotice(
+      "personnelMessage",
+      "Password reset for " + agentName +
+      ". Existing sessions revoked.",
+      "success"
+    );
+  } catch (error) {
+    setNotice("resetMessage", error.message, "error");
+  } finally {
+    $("submitReset").disabled = false;
   }
 });
 
