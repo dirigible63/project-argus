@@ -12,20 +12,42 @@
 
 .mission-selector{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 18px}.mission-selector button{flex:1;min-width:170px;text-align:left}.mission-selector button.selected{background:#195069;border-color:var(--cyan)}.evidence-log{margin-top:22px;border-top:1px solid var(--line);padding-top:16px}.evidence-entry{border-left:2px solid #4b8190;background:#071622;padding:12px 15px;margin:10px 0}.evidence-entry .code{color:var(--cyan);display:block;margin-bottom:6px}.evidence-entry pre{white-space:pre-wrap;overflow-wrap:anywhere;margin:6px 0;color:#bde9df}.transmission-pending{color:var(--cyan);animation:blink .7s steps(2) infinite}.reveal-button{margin:8px 0}.mission-selector button:disabled{cursor:not-allowed}
 .mission-nav{position:relative;margin:0 0 18px;border:1px solid var(--line);background:#0a1a27;padding:12px 16px}.mission-nav-top{display:flex;align-items:center;justify-content:space-between;gap:12px}.mission-nav-top strong{font:13px Consolas,monospace;color:var(--cyan)}.mission-menu{position:absolute;top:calc(100% + 3px);right:0;z-index:6;width:min(100%,360px);padding:10px;background:#0b2030;border:1px solid #477b8c;box-shadow:0 12px 35px #0009;display:grid;gap:7px}.mission-menu[hidden]{display:none}.mission-menu button{text-align:left;width:100%}.mission-menu button.selected{border-color:var(--cyan);background:#174052}.transmission-pending{font-family:Consolas,monospace;letter-spacing:1px}.typing:after{content:"▌";color:var(--cyan);animation:blink .65s steps(2) infinite}.mission-input:focus{outline:2px solid var(--cyan)}
+
+/* v1.3 / Operations workstation */
+.ops-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(285px,34%);gap:16px;align-items:start}
+.ops-main{min-width:0}.ops-main .mission-content{max-width:none}
+.ops-side{position:sticky;top:16px;min-width:0;max-height:calc(100vh - 110px);display:flex;flex-direction:column}
+.ops-comms-log{padding:14px;overflow-y:auto;min-height:240px;max-height:55vh;flex:1;background:#061724}
+.ops-msg{border-left:2px solid #46788c;background:#0b2333;padding:12px;margin:0 0 12px;overflow-wrap:anywhere}
+.ops-msg .code{display:block;color:var(--cyan);margin-bottom:8px}.ops-msg p{margin:0;white-space:pre-wrap;font-size:13px;line-height:1.7}
+.ops-unread{color:#a5f4c5;font:11px Consolas,monospace;animation:blink .8s steps(2) infinite}
+.ops-comms-footer{padding:12px 14px;border-top:1px solid var(--line);font:11px/1.6 Consolas,monospace;color:var(--muted)}
+.ops-objective{background:#0b2836;border-left:3px solid var(--cyan);padding:15px;margin-bottom:15px}
+.ops-objective .eyebrow{margin-bottom:6px}.ops-objective strong{font-size:17px;font-weight:500}
+.ops-next{border:1px solid #468da0;padding:12px;margin:14px 0;background:#103244}
+.ops-archive{margin-top:20px}.ops-archive summary{cursor:pointer;color:var(--cyan);font:12px Consolas,monospace;padding:12px;border:1px solid var(--line)}
+.ops-archive .evidence-log{margin-top:0;border-top:0;padding:10px}
+#mission-selector{display:none!important}
+.ops-nav{border-top:1px solid var(--line);margin:14px 0;padding-top:14px}
+.ops-nav button{font-size:11px;padding:10px 12px}.ops-nav .eyebrow{padding:0 12px 10px}
+.ops-nav .selected{background:#143345;border-color:#28596b;color:#b4f3f8}
+.ops-nav button:disabled{opacity:.55;cursor:not-allowed}
+@media(max-width:1080px){.ops-layout{grid-template-columns:1fr}.ops-side{position:static;max-height:none}.ops-comms-log{max-height:320px}}
+@media(max-width:650px){.ops-nav{display:flex;overflow-x:auto;gap:6px}.ops-nav .eyebrow{display:none}.ops-nav button{white-space:nowrap}}
 </style>
 </head>
 <body>
 <header><div class="brand"><div class="sigil"><span>⌁</span></div><div><strong>THE DIRECTORATE</strong><div class="eyebrow">Signals Division / Internal Network</div></div></div><div class="session-tools"><span class="status">LINK ESTABLISHED</span><span id="identity" class="code"></span><button id="logout" class="button secondary small" hidden>SIGN OUT</button></div></header>
 <section id="auth-screen" class="auth-screen"><form id="login-form" class="auth-card"><div class="eyebrow">Directorate / Identity Verification</div><h1>Secure Access</h1><p>Signals Division personnel only. Authenticate to enter your workstation.</p><label class="field-label" for="username">OPERATIVE ID</label><input class="field" id="username" autocomplete="username" required maxlength="32"><label class="field-label" for="password">PASSPHRASE</label><input class="field" id="password" type="password" autocomplete="current-password" required><button class="button" id="login-button" type="submit">AUTHENTICATE</button><div id="auth-error" class="auth-error" role="alert"></div></form></section>
-<div id="portal" class="shell" hidden><aside><div class="eyebrow">Workstation / 01</div><nav id="nav"><button class="active" data-page="communications"><span>◈</span> COMMUNICATIONS</button><button data-page="assignments"><span>◇</span> ASSIGNMENTS</button><button data-page="archive"><span>▤</span> INTELLIGENCE ARCHIVE</button><button data-page="systems"><span>⌘</span> SYSTEMS</button><button id="personnel-nav" data-page="personnel" hidden><span>♙</span> PERSONNEL</button></nav><div class="asidefoot">DIRECTORATE / INTERNAL<br>CHANNEL: AUTHENTICATED<br>TRANSPORT: HTTPS<br>BUILD: 1.2.0</div></aside>
+<div id="portal" class="shell" hidden><aside><div class="eyebrow">Workstation / 01</div><nav id="nav"><button class="active" data-page="communications"><span>◈</span> COMMUNICATIONS</button><button data-page="assignments"><span>◇</span> ASSIGNMENTS</button><button data-page="archive"><span>▤</span> INTELLIGENCE ARCHIVE</button><button data-page="systems"><span>⌘</span> SYSTEMS</button><button id="personnel-nav" data-page="personnel" hidden><span>♙</span> PERSONNEL</button></nav><div class="ops-nav" id="ops-nav" hidden><div class="eyebrow">FIRST LIGHT / ASSIGNMENTS</div><button type="button" id="ops-select-01" data-mission="01">01 / THE NEW RECRUIT</button><button type="button" id="ops-select-02" data-mission="02" hidden>02 / NUMBERS STATION</button><button type="button" id="ops-select-locked" disabled hidden>03 / CLASSIFIED</button></div><div class="asidefoot">DIRECTORATE / INTERNAL<br>CHANNEL: AUTHENTICATED<br>TRANSPORT: HTTPS<br>BUILD: 1.3.0</div></aside>
 <main><div class="topline"><div><div class="eyebrow">Operations / Technical advisory</div><h1 id="heading">Communications</h1></div><div class="code">NODE SD-01 / AUTHENTICATED TERMINAL</div></div>
 <div id="communications" class="dashboard"><section class="panel"><div class="panelhead"><strong>ARGUS / ADVISORY CHANNEL</strong><div class="inline-tools"><span id="connection-status" class="code">STANDBY</span><button id="new-conversation" class="button secondary small">NEW CONVERSATION</button></div></div><div class="chat" id="chat" role="log" aria-label="ARGUS conversation" aria-live="polite"></div><form id="chat-form" class="compose"><textarea id="chat-input" maxlength="3000" placeholder="ENTER TRANSMISSION..." aria-label="Message to ARGUS" required></textarea><button id="chat-send" class="button" type="submit">TRANSMIT ↗</button></form><div class="below-compose"><span id="chat-feedback" class="code" role="status"></span><span class="code">ENTER TO SEND · SHIFT+ENTER FOR NEW LINE</span></div></section><div class="sidecards"><section class="panel"><div class="panelhead"><strong>ARGUS CORE</strong><span class="code">A-01</span></div><div class="diagram"><div class="rings"></div></div><div class="metric"><div class="eyebrow">Agency Research &amp; Guidance Utility System</div><h3>TECHNICAL ADVISOR / ONLINE</h3><p>Ask questions, learn programming, or debug your own code.</p></div></section><section class="panel"><div class="panelhead"><strong>OPERATIONAL STATUS</strong></div><div class="metric"><div class="eyebrow">Assignment queue</div><h3>NO ACTIVE DIRECTIVES</h3><p>Mission assignments are not yet commissioned.</p></div></section><div class="notice">FICTIONAL TRAINING NETWORK. DO NOT TRANSMIT PASSWORDS, API KEYS OR PERSONAL INFORMATION.</div></div></div>
-<div id="mission-selector" class="mission-nav" hidden><div class="mission-nav-top"><div><div class="eyebrow">SELECTED ASSIGNMENT</div><strong id="mission-current-label">01 — THE NEW RECRUIT</strong></div><button id="mission-menu-toggle" type="button" class="button secondary small" aria-expanded="false" aria-controls="mission-menu">MISSION LIST ▾</button></div><div id="mission-menu" class="mission-menu" hidden><button id="select-m01" type="button" class="button secondary">01 — THE NEW RECRUIT</button><button id="select-m02" type="button" class="button secondary" hidden>02 — NUMBERS STATION</button></div></div>
+<div id="ops-layout" class="ops-layout" hidden><div id="ops-main" class="ops-main"><div id="ops-objective" class="ops-objective"><div class="eyebrow">CURRENT OBJECTIVE</div><strong id="ops-objective-text">Retrieving assignment...</strong><div class="code" id="ops-objective-detail"></div></div><div id="mission-selector" class="mission-nav" hidden><div class="mission-nav-top"><div><div class="eyebrow">SELECTED ASSIGNMENT</div><strong id="mission-current-label">01 — THE NEW RECRUIT</strong></div><button id="mission-menu-toggle" type="button" class="button secondary small" aria-expanded="false" aria-controls="mission-menu">MISSION LIST ▾</button></div><div id="mission-menu" class="mission-menu" hidden><button id="select-m01" type="button" class="button secondary">01 — THE NEW RECRUIT</button><button id="select-m02" type="button" class="button secondary" hidden>02 — NUMBERS STATION</button></div></div>
 <section id="assignments-panel" class="panel" hidden><div class="panelhead"><strong>OPERATIONS / FIRST LIGHT</strong><span id="mission-status" class="code">AWAITING BRIEFING</span></div><div class="mission-content"><div class="eyebrow">OPERATION FIRST LIGHT · MISSION 01</div><h2>The New Recruit</h2><div class="transmission"><strong>ARGUS — INITIAL BRIEFING</strong><p>Welcome to Signals Division, Agent. Before you can assist Kestrel in the field, we must verify your workstation. You will install two legitimate development tools, run a diagnostic on your own computer, and return its activation response. I can guide you, but only you can operate your computer.</p></div><div id="mission-complete" hidden><div class="transmission"><strong>WORKSTATION VERIFIED — MISSION COMPLETE</strong><p>KESTREL: Good. You're online. I've just received something rather strange from Station 17. Stand by for your next assignment.</p><p>Mission 02 — Numbers Station is now available below.</p></div></div><div id="mission-active"><h3>Workstation setup</h3><div class="mission-step"><strong>1. Install Python</strong><p>Download Python from <a href="https://www.python.org/downloads/" target="_blank" rel="noopener noreferrer">python.org</a>. On Windows, make sure the Python launcher is installed. Open PowerShell and try <code>py --version</code> (or <code>python --version</code>).</p></div><div class="mission-step"><strong>2. Install VS Code</strong><p>Download Visual Studio Code from <a href="https://code.visualstudio.com/" target="_blank" rel="noopener noreferrer">code.visualstudio.com</a>. Create a folder named <code>Directorate</code> inside Documents.</p></div><div class="mission-step"><strong>3. Download your diagnostic package</strong><p>Save both files into the same <code>Directorate</code> folder. The activation file is unique to your Agent account.</p><div class="mission-actions"><button class="button" id="download-diagnostic" type="button">DOWNLOAD DIAGNOSTIC.PY</button><button class="button secondary" id="download-challenge" type="button">DOWNLOAD ACTIVATION.TXT</button></div></div><div class="mission-step"><strong>4. Run the diagnostic</strong><p>Open <code>workstation_diagnostic.py</code> in VS Code. Open its terminal, make sure the terminal is in the same folder as both files, and run:</p><pre><code>py workstation_diagnostic.py</code></pre><p>If <code>py</code> isn't recognized, try <code>python workstation_diagnostic.py</code>. Ask ARGUS for help if anything goes wrong.</p></div><div class="mission-step"><strong>5. Transmit activation response</strong><p>Copy the 64-character response printed by your Python program and paste it below.</p><form id="mission-form"><label class="field-label" for="activation-response">ACTIVATION RESPONSE</label><input id="activation-response" class="mission-input" maxlength="64" autocomplete="off" spellcheck="false" required placeholder="Paste diagnostic output here"><div class="mission-actions"><button class="button" id="mission-verify" type="submit">VERIFY WORKSTATION</button></div></form><div id="mission-feedback" class="code" role="status"></div></div></div></div></section>
 <section id="personnel" class="panel" hidden><div class="panelhead"><strong>PERSONNEL / AGENT ROSTER</strong><span class="code">DIRECTOR CLEARANCE</span></div><div class="personnel-toolbar"><span id="personnel-feedback" class="code"></span><button id="add-agent" class="button">+ REGISTER AGENT</button></div><div class="table-wrap"><table><thead><tr><th>OPERATIVE ID</th><th>DISPLAY NAME</th><th>STATUS</th><th>ACTIONS</th></tr></thead><tbody id="agent-rows"></tbody></table></div></section>
-<section id="mission02-panel" class="panel" hidden><div class="panelhead"><strong>FIRST LIGHT / MISSION 02 — NUMBERS STATION</strong><span id="m02-status" class="code">INTERCEPT PENDING</span></div><div class="mission-content"><h2>Numbers Station</h2><div class="transmission"><strong>KESTREL / FIELD COMMUNICATIONS</strong><p id="m02-transmission">I've picked up a coded radio signal near Station 17. I need you to identify what it says.</p></div><div id="m02-active"><div class="signal-panel"><div class="eyebrow">INTERCEPT MONITOR / RECORDED SIGNAL</div><div class="signal-bars" aria-hidden="true"><i style="height:14px"></i><i style="height:27px"></i><i style="height:43px"></i><i style="height:20px"></i><i style="height:60px"></i><i style="height:37px"></i><i style="height:18px"></i><i style="height:65px"></i><i style="height:33px"></i><i style="height:55px"></i><i style="height:26px"></i><i style="height:42px"></i><i style="height:70px"></i><i style="height:20px"></i><i style="height:47px"></i><i style="height:36px"></i><i style="height:59px"></i><i style="height:22px"></i><i style="height:44px"></i><i style="height:17px"></i><i style="height:52px"></i><i style="height:30px"></i><i style="height:66px"></i><i style="height:25px"></i><i style="height:41px"></i><i style="height:57px"></i><i style="height:19px"></i><i style="height:35px"></i><i style="height:50px"></i><i style="height:23px"></i></div><div class="code">SIGNAL CLASS: ENCODED ALPHABETIC TRANSMISSION</div></div><h3>Intercept transcript</h3><pre class="mission-block" id="m02-intercept"></pre><p>The signal uses a <strong>Caesar cipher</strong>: each letter has been moved forward by the same number of positions. Download the decoder, open it in VS Code, and change the <code>offset</code> variable. Run it locally until the message makes sense.</p><div class="mission-actions"><button class="button" id="m02-download" type="button">DOWNLOAD DECODER.PY</button><button class="button secondary" id="m02-transcript-download" type="button">DOWNLOAD INTERCEPT.TXT</button></div><div class="mission-step"><strong>Run the decoder</strong><pre><code>py decoder.py</code></pre><p>Try different values for <code>offset</code> from 1 to 25. When you see readable English, copy the entire decoded line below. Ask ARGUS for hints if needed.</p></div><form id="m02-form"><label class="field-label" for="m02-answer">DECODED TRANSMISSION</label><input id="m02-answer" class="mission-input" maxlength="160" autocomplete="off" spellcheck="false" required placeholder="Enter the entire decoded message"><div class="mission-actions"><button class="button" id="m02-verify" type="submit">TRANSMIT FINDINGS TO KESTREL</button></div></form></div><div id="m02-complete" hidden><div class="transmission"><strong>MISSION COMPLETE / TRANSMISSION VERIFIED</strong><p>KESTREL: Elias Voss. That name is not supposed to be in this transmission. I'm checking his last known location.</p><p>Mission 03 — The Photograph is being prepared.</p></div></div><div class="code" id="m02-feedback" role="status"></div><div id="m02-evidence" class="evidence-log"></div></div></section>
-<section id="other" class="panel" hidden><div class="panelhead"><strong id="other-label">MODULE</strong><span class="code">AWAITING COMMISSIONING</span></div><div class="placeholder"><h2 id="other-title">Module unavailable</h2><p id="other-description">This module is awaiting commissioning.</p></div></section>
-<footer><span>DIRECTORATE SIGNALS DIVISION / TRAINING NETWORK</span><span>ARGUS v1.2 / FIRST LIGHT</span></footer></main></div>
+<section id="mission02-panel" class="panel" hidden><div class="panelhead"><strong>FIRST LIGHT / MISSION 02 — NUMBERS STATION</strong><span id="m02-status" class="code">INTERCEPT PENDING</span></div><div class="mission-content"><h2>Numbers Station</h2><div class="transmission" id="m02-old-transmission" hidden><strong>KESTREL / FIELD COMMUNICATIONS</strong><p id="m02-transmission">I've picked up a coded radio signal near Station 17. I need you to identify what it says.</p></div><div id="m02-active"><div class="signal-panel"><div class="eyebrow">INTERCEPT MONITOR / RECORDED SIGNAL</div><div class="signal-bars" aria-hidden="true"><i style="height:14px"></i><i style="height:27px"></i><i style="height:43px"></i><i style="height:20px"></i><i style="height:60px"></i><i style="height:37px"></i><i style="height:18px"></i><i style="height:65px"></i><i style="height:33px"></i><i style="height:55px"></i><i style="height:26px"></i><i style="height:42px"></i><i style="height:70px"></i><i style="height:20px"></i><i style="height:47px"></i><i style="height:36px"></i><i style="height:59px"></i><i style="height:22px"></i><i style="height:44px"></i><i style="height:17px"></i><i style="height:52px"></i><i style="height:30px"></i><i style="height:66px"></i><i style="height:25px"></i><i style="height:41px"></i><i style="height:57px"></i><i style="height:19px"></i><i style="height:35px"></i><i style="height:50px"></i><i style="height:23px"></i></div><div class="code">SIGNAL CLASS: ENCODED ALPHABETIC TRANSMISSION</div></div><h3>Intercept transcript</h3><pre class="mission-block" id="m02-intercept"></pre><p>The signal uses a <strong>Caesar cipher</strong>: each letter has been moved forward by the same number of positions. Download the decoder, open it in VS Code, and change the <code>offset</code> variable. Run it locally until the message makes sense.</p><div class="mission-actions"><button class="button" id="m02-download" type="button">DOWNLOAD DECODER.PY</button><button class="button secondary" id="m02-transcript-download" type="button">DOWNLOAD INTERCEPT.TXT</button></div><div class="mission-step"><strong>Run the decoder</strong><pre><code>py decoder.py</code></pre><p>Try different values for <code>offset</code> from 1 to 25. When you see readable English, copy the entire decoded line below. Ask ARGUS for hints if needed.</p></div><form id="m02-form"><label class="field-label" for="m02-answer">DECODED TRANSMISSION</label><input id="m02-answer" class="mission-input" maxlength="160" autocomplete="off" spellcheck="false" required placeholder="Enter the entire decoded message"><div class="mission-actions"><button class="button" id="m02-verify" type="submit">TRANSMIT FINDINGS TO KESTREL</button></div></form></div><div id="m02-complete" hidden><div class="ops-next"><strong>MISSION COMPLETE / BOTH INTERCEPTS VERIFIED</strong><p>Further orders will be issued through Field Communications.</p></div></div><div class="code" id="m02-feedback" role="status"></div><div id="m02-evidence" class="evidence-log"></div></div></section>
+</div><section id="ops-comms" class="panel ops-side" aria-label="Field Communications"><div class="panelhead"><strong>◈ FIELD COMMUNICATIONS</strong><span id="ops-comms-status" class="code">SECURE CHANNEL</span></div><div id="ops-comms-log" class="ops-comms-log" role="log" aria-label="Field messages"></div><div class="ops-comms-footer">DIRECTORATE / FIELD OPERATIONS<br>Messages are delivered when operationally available. ARGUS advisory remains in Communications.</div></section></div><section id="other" class="panel" hidden><div class="panelhead"><strong id="other-label">MODULE</strong><span class="code">AWAITING COMMISSIONING</span></div><div class="placeholder"><h2 id="other-title">Module unavailable</h2><p id="other-description">This module is awaiting commissioning.</p></div></section>
+<footer><span>DIRECTORATE SIGNALS DIVISION / TRAINING NETWORK</span><span>ARGUS v1.3 / FIRST LIGHT</span></footer></main></div>
 <div id="modal-backdrop" class="modal-backdrop" hidden><div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title"><h2 id="modal-title"></h2><p id="modal-description"></p><form id="modal-form"><div id="modal-fields"></div><div id="modal-error" class="error" role="alert"></div><div class="modal-actions"><button id="modal-cancel" type="button" class="button secondary">CANCEL</button><button id="modal-confirm" type="submit" class="button">CONFIRM</button></div></form></div></div>
 <script>
 'use strict';
@@ -97,7 +119,7 @@ async function navigate(page){
    if(page==='assignments'&&currentUser?.role!=='agent')return;
   currentPage=page;
   document.querySelectorAll('#nav button[data-page]').forEach(button=>button.classList.toggle('active',button.dataset.page===page));
-  $('communications').hidden=page!=='communications';$('personnel').hidden=page!=='personnel';$('assignments-panel').hidden=page!=='assignments';$('mission02-panel').hidden=true;$('mission-selector').hidden=page!=='assignments';$('mission-menu').hidden=true;$('mission-menu-toggle').setAttribute('aria-expanded','false');$('other').hidden=page==='communications'||page==='personnel'||page==='assignments';
+  $('communications').hidden=page!=='communications';$('personnel').hidden=page!=='personnel';$('assignments-panel').hidden=page!=='assignments';$('mission02-panel').hidden=true;$('mission-selector').hidden=true;$('ops-layout').hidden=page!=='assignments';$('ops-nav').hidden=page!=='assignments';$('mission-menu').hidden=true;$('mission-menu-toggle').setAttribute('aria-expanded','false');$('other').hidden=page==='communications'||page==='personnel'||page==='assignments';
   const names={communications:'Communications',personnel:'Personnel',assignments:'Assignments',archive:'Intelligence Archive',systems:'Systems'};
   $('heading').textContent=names[page]||'Workstation';
   if(page==='communications')await loadCommunications();
@@ -340,6 +362,58 @@ function addEvidence(container,label,value,code=false){
  const body=document.createElement(code?'pre':'div');body.textContent=value;
  item.append(heading,body);container.append(item);
 }
+
+// Workstation layout, field log, and explicit stage display.
+const opsFieldAnimated=new Set();
+function updateOpsObjective(){
+ const m01done=!$('mission-complete').hidden;
+ if(selectedMission==='01'){
+  $('ops-objective-text').textContent=m01done?'Workstation activated':'Verify your workstation';
+  $('ops-objective-detail').textContent=m01done?'MISSION 01 COMPLETE':'Download the diagnostic package, run it locally, and submit your activation response.';
+ }else if(mission02Data){
+  const d=mission02Data;
+  $('ops-objective-text').textContent=d.completed?'Both transmissions verified':d.stage===2?'Decode Intercept 02':'Decode Intercept 01';
+  $('ops-objective-detail').textContent=d.completed?'Mission 02 complete. Await further instructions.':d.stage===2?'New intercept available. Download INTERCEPT 02, run your decoder again, and submit the new result.':'Download INTERCEPT 01 and the decoder, then submit the decoded message.';
+ }
+}
+function fieldMessages(){
+ const msgs=[];
+ if(selectedMission==='01'){
+  if(!$('mission-complete').hidden)msgs.push({key:'m01-end',who:'KESTREL / FIELD OPERATIVE',text:"Good. You're online. I've just received something rather strange from Station 17. Stand by for your next assignment."});
+  else msgs.push({key:'m01-argus',who:'ARGUS / BRIEFING',text:'Welcome to Signals Division. Complete your workstation diagnostic to establish field communications.'});
+ }else if(mission02Data){
+  msgs.push({key:'m02-start',who:'KESTREL / FIELD OPERATIVE',text:"I've picked up a coded radio signal near Station 17. I need you to identify what it says."});
+  const evidence=mission02Data.evidence||[];
+  if(evidence[0]?.verified)msgs.push({key:'m02-mid',who:'KESTREL / FIELD OPERATIVE',text:'Good work. A second transmission has arrived. See whether your decoder can handle it.'});
+  if(mission02Data.completed)msgs.push({key:'m02-end',who:'KESTREL / FIELD OPERATIVE',text:"Elias Voss. That name is not supposed to be in this transmission. I'm checking his last known location."});
+ }
+ return msgs;
+}
+async function renderFieldConsole(animate=false,latestText=''){
+ if(currentPage!=='assignments')return;
+ const log=$('ops-comms-log');log.replaceChildren();
+ const msgs=fieldMessages();
+ for(const [i,msg] of msgs.entries()){
+  const entry=document.createElement('div');entry.className='ops-msg';
+  const who=document.createElement('span');who.className='code';who.textContent=msg.who;
+  const p=document.createElement('p');entry.append(who,p);log.append(entry);
+  if(animate&&i===msgs.length-1&&latestText&& !opsFieldAnimated.has(msg.key)){
+   opsFieldAnimated.add(msg.key);
+   $('ops-comms-status').className='ops-unread';$('ops-comms-status').textContent='◈ INCOMING';
+   await revealTransmission(p,msg.text);
+   $('ops-comms-status').className='code';$('ops-comms-status').textContent='CHANNEL OPEN';
+  }else p.textContent=msg.text;
+ }
+ log.scrollTop=log.scrollHeight;
+}
+for(const [id,mission] of [['ops-select-01','01'],['ops-select-02','02']]){
+ $(id).addEventListener('click',()=>{transmissionGeneration++;selectedMission=mission;sessionStorage.setItem('argus_v11_mission_selected',mission);showSelectedMission();});
+}
+// Move the large evidence record into a collapsible archive; no loss of data.
+const evidenceDetails=document.createElement('details');evidenceDetails.className='ops-archive';
+const evidenceSummary=document.createElement('summary');evidenceSummary.textContent='▤ EVIDENCE ARCHIVE / PERMANENT RECORD';
+evidenceDetails.append(evidenceSummary,$('m02-evidence'));$('mission02-panel').querySelector('.mission-content').append(evidenceDetails);
+
 function closeMissionMenu(){ $('mission-menu').hidden=true;$('mission-menu-toggle').setAttribute('aria-expanded','false'); }
 $('mission-menu-toggle').addEventListener('click',()=>{const next=!$('mission-menu').hidden;$('mission-menu').hidden=next;$('mission-menu-toggle').setAttribute('aria-expanded',String(!next));});
 function showSelectedMission(){
@@ -353,6 +427,11 @@ function showSelectedMission(){
  $('select-m01').textContent='01 — THE NEW RECRUIT'+(m01done?' / COMPLETE':' / ACTIVE');
  $('select-m02').textContent='02 — NUMBERS STATION'+(mission02Data?.completed?' / COMPLETE':' / ACTIVE');
  $('mission-current-label').textContent=selectedMission==='01'?'01 — THE NEW RECRUIT':'02 — NUMBERS STATION';
+ $('ops-select-01').classList.toggle('selected',selectedMission==='01');
+ $('ops-select-02').classList.toggle('selected',selectedMission==='02');
+ $('ops-select-02').hidden=!m01done;
+ $('ops-select-locked').hidden=!m01done;
+ updateOpsObjective();renderFieldConsole(false);
 }
 for(const [id,button] of [['01','select-m01'],['02','select-m02']]){
  $(button).addEventListener('click',()=>{transmissionGeneration++;selectedMission=id;sessionStorage.setItem('argus_v11_mission_selected',id);closeMissionMenu();showSelectedMission();});
@@ -375,6 +454,8 @@ async function loadMission02(){
   $('m02-active').hidden=data.completed;$('m02-complete').hidden=!data.completed;
   $('m02-status').textContent=data.completed?'MISSION COMPLETE':'INTERCEPT '+data.stage+' OF 2';
   $('m02-intercept').textContent=data.intercept||'';
+  $('m02-transcript-download').textContent='DOWNLOAD INTERCEPT '+String(data.stage).padStart(2,'0')+' (intercept.txt)';
+  $('m02-transcript-download').disabled=Boolean(data.completed);
   if(!data.completed)$('m02-answer').value='';
   const log=$('m02-evidence');log.replaceChildren();
   const heading=document.createElement('h3');heading.textContent='MISSION EVIDENCE LOG / PERMANENT RECORD';log.append(heading);
@@ -387,6 +468,7 @@ async function loadMission02(){
    }
   }
   $('m02-feedback').textContent='';
+  updateOpsObjective();renderFieldConsole(false);
  }catch(e){$('m02-feedback').textContent=e.message;}
 }
 const M02_DECODER=`# DIRECTORATE / SIGNALS DIVISION — DECODER
@@ -418,8 +500,9 @@ $('m02-form').addEventListener('submit',async event=>{
  try{
   const result=await apiRequest('/missions/first-light/02/verify',{method:'POST',body:JSON.stringify({decoded:$('m02-answer').value})});
   await loadMission02();
-  const target=$('m02-transmission');
-  await revealTransmission(target,result.transmission||'Transmission verified.');
+  await renderFieldConsole(true,result.transmission||'Transmission verified.');
+  if(!result.completed){$('m02-feedback').textContent='INTERCEPT 01 VERIFIED. INTERCEPT 02 IS READY — DOWNLOAD THE NEW FILE BELOW.';}
+  else {$('m02-feedback').textContent='MISSION COMPLETE / BOTH INTERCEPTS VERIFIED';}
  }catch(e){$('m02-feedback').textContent=e.message;}
  finally{$('m02-verify').disabled=false;}
 });
