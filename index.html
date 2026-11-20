@@ -185,7 +185,7 @@ async function apiRequest(path,options={}){
 }
 function showLogin(message=''){
   sessionEpoch++;
-  sessionToken=null;currentUser=null;
+  sessionToken=null;currentUser=null;orientationActive=false;$('portal').inert=false;document.body.classList.remove('orientation-active');$('orientation-layer').hidden=true;
   sessionStorage.removeItem(SESSION_KEY);
   $('portal').hidden=true;$('auth-screen').hidden=false;$('logout').hidden=true;
   $('identity').textContent='';$('auth-error').textContent=message;
@@ -198,8 +198,8 @@ async function showPortal(user){
   $('identity').textContent=user.role.toUpperCase()+' / '+(user.display_name||user.username);
   $('personnel-nav').hidden=user.role!=='director';
    document.querySelector('#nav button[data-page="assignments"]').hidden=user.role!=='agent';
-  await navigate('communications');
   if(user.role==='agent')await checkOrientation();
+  else await navigate('communications');
 }
 $('login-form').addEventListener('submit',async event=>{
   event.preventDefault();$('auth-error').textContent='';$('login-button').disabled=true;
@@ -221,11 +221,13 @@ $('nav').addEventListener('click',event=>{
 async function navigate(page){
   if(page==='personnel'&&currentUser?.role!=='director')return;
    if(page==='assignments'&&currentUser?.role!=='agent')return;
+  if(orientationActive && !orientationInternalNavigation)return;
   currentPage=page;
   document.querySelectorAll('#nav button[data-page]').forEach(button=>button.classList.toggle('active',button.dataset.page===page));
   $('communications').hidden=page!=='communications';$('personnel').hidden=page!=='personnel';$('assignments-panel').hidden=page!=='assignments';$('mission02-panel').hidden=true;$('mission03-panel').hidden=true;$('mission-selector').hidden=true;$('ops-layout').hidden=page!=='assignments';$('ops-nav').hidden=page!=='assignments';$('mission-menu').hidden=true;$('mission-menu-toggle').setAttribute('aria-expanded','false');$('other').hidden=true;$('toolkit-page').hidden=page!=='toolkit';$('archive-page').hidden=page!=='archive';$('systems-page').hidden=page!=='systems';$('field-toolkit').hidden=true;
   const names={communications:'Communications',personnel:'Personnel',assignments:'Assignments',archive:'Intelligence Archive',toolkit:'Field Toolkit',systems:'Systems'};
   $('heading').textContent=names[page]||'Workstation';
+  if(orientationActive)return; // Tour shows layout without issuing restricted API requests.
   if(page==='communications')await loadCommunications();
   else if(page==='personnel')await loadAgents();
    else if(page==='assignments')await loadAssignments();
@@ -915,13 +917,13 @@ const orientationSteps=[
  {title:'SYSTEMS / WORKSTATION',copy:'Systems displays workstation and service information. As your clearance and investigations progress, further diagnostic capabilities may become available. You can replay this orientation here.',page:'systems',target:'#systems-page .panelhead'},
  {title:'BRIEFING COMPLETE',copy:'You are ready for duty. Begin with Assignments. Introduce yourself to ARGUS in Communications and ask for a briefing whenever you need context. Keep operational material inside authorized Directorate channels. The Directorate is relying on your judgment.',page:'assignments',target:'#ops-objective'}
 ];
-let orientationIndex=0,orientationActive=false,orientationSaving=false;
+let orientationIndex=0,orientationActive=false,orientationSaving=false,orientationInternalNavigation=false;
 function clearOrientationFocus(){document.querySelectorAll('.orientation-focus').forEach(el=>el.classList.remove('orientation-focus'));}
 async function checkOrientation(){
- try{const data=await apiRequest('/orientation');if(!data.completed)await startOrientation();}
- catch(error){console.warn('Orientation status unavailable:',error.message);}
+ try{const data=await apiRequest('/orientation');if(!data.completed)await startOrientation();else await navigate('communications');}
+ catch(error){console.warn('Orientation status unavailable:',error.message);await startOrientation();$('orientation-error').textContent='Unable to verify orientation status. Completion will require a connection.';}
 }
-async function startOrientation(){orientationIndex=0;orientationActive=true;document.body.classList.add('orientation-active');$('orientation-layer').hidden=false;await showOrientationStep();}
+async function startOrientation(){orientationIndex=0;orientationActive=true;document.body.classList.add('orientation-active');$('portal').inert=true;$('orientation-layer').hidden=false;await showOrientationStep();}
 function positionOrientationPanel(target){
  const mobile=window.innerWidth<=780;
  document.body.style.setProperty('--orientation-rail',Math.min(420,Math.round(window.innerWidth*.44))+'px');
@@ -931,7 +933,8 @@ function positionOrientationPanel(target){
 window.addEventListener('resize',()=>{if(orientationActive)positionOrientationPanel(document.querySelector(orientationSteps[orientationIndex].target));});
 async function showOrientationStep(){
  const step=orientationSteps[orientationIndex];clearOrientationFocus();
- await navigate(step.page);
+ orientationInternalNavigation=true;
+ try{await navigate(step.page);}finally{orientationInternalNavigation=false;}
  if(!orientationActive)return;
  const target=document.querySelector(step.target);if(target){target.scrollIntoView({block:'nearest',inline:'nearest'});target.classList.add('orientation-focus');}
  $('orientation-progress').textContent='SIGNALS DIVISION / ORIENTATION '+String(orientationIndex+1).padStart(2,'0')+' OF '+orientationSteps.length;
@@ -944,7 +947,7 @@ $('orientation-next').addEventListener('click',async()=>{
  if(orientationSaving)return;
  if(orientationIndex<orientationSteps.length-1){orientationIndex++;await showOrientationStep();return;}
  orientationSaving=true;$('orientation-next').disabled=true;
- try{await apiRequest('/orientation/complete',{method:'POST',body:'{}'});orientationActive=false;document.body.classList.remove('orientation-active');$('orientation-layer').hidden=true;clearOrientationFocus();await navigate('assignments');}
+ try{await apiRequest('/orientation/complete',{method:'POST',body:'{}'});orientationActive=false;$('portal').inert=false;document.body.classList.remove('orientation-active');$('orientation-layer').hidden=true;clearOrientationFocus();await navigate('assignments');}
  catch(error){$('orientation-error').textContent='Unable to record acknowledgement: '+error.message;}
  finally{orientationSaving=false;$('orientation-next').disabled=false;}
 });
