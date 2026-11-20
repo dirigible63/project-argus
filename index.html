@@ -37,6 +37,7 @@
 .m03-map{border:1px solid #315467;background:linear-gradient(120deg,#0c2835,#081a29);padding:16px;margin:12px 0 22px;max-width:740px}.m03-location{padding:13px 6px;border-top:1px solid #244253;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}.m03-location strong{font-size:13px;color:#9bdce9}.m03-location span{font-size:12px}
 
 /* Personnel dossier portraits */
+#voss-dossier[hidden],#nightglass-dossier[hidden],#greyhaven-archive[hidden]{display:none!important}
 .dossier-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin:18px 0 22px}
 .dossier-card{min-width:0;border:1px solid #315c70;background:#071c29;overflow:hidden}
 .dossier-card img{display:block;width:100%;aspect-ratio:5/4;object-fit:cover;object-position:center 40%;filter:saturate(.78)}
@@ -46,18 +47,24 @@
 @media(max-width:500px){.dossier-card{display:block}.dossier-card img{height:200px}}
 </style>
 <style id="m03-converter-styles">.m03-convert-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin:14px 0}.m03-convert-grid fieldset{border:1px solid #325366;padding:12px;min-width:0}.m03-convert-grid legend{font:11px Consolas,monospace;color:#9bdce8;padding:0 6px}.m03-convert-grid label{display:flex;justify-content:space-between;align-items:center;gap:8px;font:12px Consolas,monospace;margin:8px 0}.m03-convert-grid input{width:110px;max-width:55%;background:#061521;color:#d4e4ed;border:1px solid #456174;padding:8px}#m03-convert-result{margin:12px 0;white-space:normal}</style><style id="orientation-styles">
-#orientation-layer{position:fixed;inset:0;z-index:50;pointer-events:none;background:#020b13a6}
+#orientation-layer{position:fixed;inset:0;z-index:50;pointer-events:none;background:transparent}
+body.orientation-active #portal{width:calc(100% - var(--orientation-rail, 420px));max-width:calc(100% - var(--orientation-rail, 420px));min-width:0}
+body.orientation-active #portal main{min-width:0}
+body.orientation-active #portal .dashboard,body.orientation-active #portal .ops-layout{grid-template-columns:minmax(0,1fr)}
+body.orientation-active #portal .sidecards,body.orientation-active #portal .ops-side{display:none}
+@media(max-width:780px){body.orientation-active #portal{width:100%;max-width:100%;padding-bottom:var(--orientation-rail-height,280px)}body.orientation-active #portal .shell{min-width:0}}
+
 #orientation-layer[hidden]{display:none!important}
 .orientation-focus{position:relative!important;z-index:51!important;outline:3px solid #80e6ef!important;outline-offset:5px!important;box-shadow:0 0 0 8px #40d4e422!important}
-#orientation-panel{position:fixed;right:clamp(12px,4vw,48px);bottom:clamp(12px,4vh,40px);width:min(420px,calc(100vw - 24px));max-height:calc(100vh - 32px);overflow:auto;background:#0b2434;border:1px solid #66c6d5;box-shadow:0 20px 80px #000c;padding:24px;pointer-events:auto;z-index:52}
+#orientation-panel{position:fixed;right:0;top:0;bottom:0;width:min(420px,44vw);max-height:100vh;overflow:auto;background:#0b2434;border:1px solid #66c6d5;box-shadow:0 20px 80px #000c;padding:24px;pointer-events:auto;z-index:52}
 #orientation-panel h2{font-size:21px;font-weight:400;margin:8px 0}#orientation-panel p{font-size:14px;line-height:1.7;color:#c3d9e6}#orientation-progress{color:#86d8e5;font:11px Consolas,monospace;letter-spacing:1px}#orientation-controls{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:22px}
 #orientation-error{color:#ffb8b8;font:12px Consolas,monospace;min-height:1em}
-@media(max-width:650px){#orientation-panel{padding:16px;max-height:calc(100vh - 32px)}#orientation-panel h2{font-size:18px}}
+@media(max-width:780px){#orientation-panel{top:auto;bottom:0;right:0;left:0;width:100%;height:auto;max-height:42vh;padding:14px}#orientation-panel h2{font-size:18px;margin:4px 0}#orientation-panel p{line-height:1.4}#orientation-controls{margin-top:10px}}
 </style></head>
 <body>
 <header><div class="brand"><div class="sigil"><span>⌁</span></div><div><strong>THE DIRECTORATE</strong><div class="eyebrow">Signals Division / Internal Network</div></div></div><div class="session-tools"><span class="status">LINK ESTABLISHED</span><span id="identity" class="code"></span><button id="logout" class="button secondary small" hidden>SIGN OUT</button></div></header>
 <section id="auth-screen" class="auth-screen"><form id="login-form" class="auth-card"><div class="eyebrow">Directorate / Identity Verification</div><h1>Secure Access</h1><p>Signals Division personnel only. Authenticate to enter your workstation.</p><label class="field-label" for="username">OPERATIVE ID</label><input class="field" id="username" autocomplete="username" required maxlength="32"><label class="field-label" for="password">PASSPHRASE</label><input class="field" id="password" type="password" autocomplete="current-password" required><button class="button" id="login-button" type="submit">AUTHENTICATE</button><div id="auth-error" class="auth-error" role="alert"></div></form></section>
-<div id="portal" class="shell" hidden><aside><div class="eyebrow">Workstation / 01</div><nav id="nav"><button class="active" data-page="communications"><span>◈</span> COMMUNICATIONS</button><button data-page="assignments"><span>◇</span> ASSIGNMENTS</button><button data-page="archive"><span>▤</span> INTELLIGENCE ARCHIVE</button><button data-page="toolkit"><span>⚒</span> FIELD TOOLKIT</button><button data-page="systems"><span>⌘</span> SYSTEMS</button><button id="personnel-nav" data-page="personnel" hidden><span>♙</span> PERSONNEL</button></nav><div class="ops-nav" id="ops-nav" hidden><div class="eyebrow">FIRST LIGHT / ASSIGNMENTS</div><button type="button" id="ops-select-01" data-mission="01">01 / THE NEW RECRUIT</button><button type="button" id="ops-select-02" data-mission="02" hidden>02 / NUMBERS STATION</button><button type="button" id="ops-select-03" data-mission="03" hidden>03 / THE PHOTOGRAPH</button><button id="ops-select-04" type="button" hidden>04 / DEAD DROP</button><button id="ops-select-05" type="button" hidden>05 — FALSE TRAIL</button><button id="ops-select-06" type="button" hidden>06 — THE LAST TRANSMISSION</button><button type="button" id="ops-select-locked" disabled hidden>04 / CLASSIFIED</button></div><div class="asidefoot">DIRECTORATE / INTERNAL<br>CHANNEL: AUTHENTICATED<br>TRANSPORT: HTTPS<br>BUILD: 1.8.0</div></aside>
+<div id="portal" class="shell" hidden><aside><div class="eyebrow">Workstation / 01</div><nav id="nav"><button class="active" data-page="communications"><span>◈</span> COMMUNICATIONS</button><button data-page="assignments"><span>◇</span> ASSIGNMENTS</button><button data-page="archive"><span>▤</span> INTELLIGENCE ARCHIVE</button><button data-page="toolkit"><span>⚒</span> FIELD TOOLKIT</button><button data-page="systems"><span>⌘</span> SYSTEMS</button><button id="personnel-nav" data-page="personnel" hidden><span>♙</span> PERSONNEL</button></nav><div class="ops-nav" id="ops-nav" hidden><div class="eyebrow">FIRST LIGHT / ASSIGNMENTS</div><button type="button" id="ops-select-01" data-mission="01">01 / THE NEW RECRUIT</button><button type="button" id="ops-select-02" data-mission="02" hidden>02 / NUMBERS STATION</button><button type="button" id="ops-select-03" data-mission="03" hidden>03 / THE PHOTOGRAPH</button><button id="ops-select-04" type="button" hidden>04 / DEAD DROP</button><button id="ops-select-05" type="button" hidden>05 — FALSE TRAIL</button><button id="ops-select-06" type="button" hidden>06 — THE LAST TRANSMISSION</button><button type="button" id="ops-select-locked" disabled hidden>04 / CLASSIFIED</button></div><div class="asidefoot">DIRECTORATE / INTERNAL<br>CHANNEL: AUTHENTICATED<br>TRANSPORT: HTTPS<br>BUILD: 1.9.1</div></aside>
 <main><div class="topline"><div><div class="eyebrow">Operations / Technical advisory</div><h1 id="heading">Communications</h1></div><div class="code">NODE SD-01 / AUTHENTICATED TERMINAL</div></div>
 <div id="communications" class="dashboard"><section class="panel"><div class="panelhead"><strong>ARGUS / ADVISORY CHANNEL</strong><div class="inline-tools"><span id="connection-status" class="code">STANDBY</span><button id="new-conversation" class="button secondary small">NEW CONVERSATION</button></div></div><div class="chat" id="chat" role="log" aria-label="ARGUS conversation" aria-live="polite"></div><form id="chat-form" class="compose"><textarea id="chat-input" maxlength="3000" placeholder="ENTER TRANSMISSION..." aria-label="Message to ARGUS" required></textarea><button id="chat-send" class="button" type="submit">TRANSMIT ↗</button></form><div class="below-compose"><span id="chat-feedback" class="code" role="status"></span><span class="code">ENTER TO SEND · SHIFT+ENTER FOR NEW LINE</span></div></section><div class="sidecards"><section class="panel"><div class="panelhead"><strong>ARGUS CORE</strong><span class="code">A-01</span></div><div class="diagram"><div class="rings"></div></div><div class="metric"><div class="eyebrow">Agency Research &amp; Guidance Utility System</div><h3>TECHNICAL ADVISOR / ONLINE</h3><p>Ask questions, learn programming, or debug your own code.</p></div></section><section class="panel"><div class="panelhead"><strong>OPERATIONAL STATUS</strong></div><div class="metric"><div class="eyebrow">Assignment queue</div><h3>NO ACTIVE DIRECTIVES</h3><p>Mission assignments are not yet commissioned.</p></div></section><div class="notice">SECURITY NOTICE: DO NOT TRANSMIT PASSWORDS, API KEYS OR PERSONAL INFORMATION.</div></div></div>
 <section id="personnel" class="panel" hidden><div class="panelhead"><strong>PERSONNEL / AGENT ROSTER</strong><span class="code">DIRECTOR CLEARANCE</span></div><div class="personnel-toolbar"><span id="personnel-feedback" class="code"></span><button id="add-agent" class="button">+ REGISTER AGENT</button></div><div class="table-wrap"><table><thead><tr><th>OPERATIVE ID</th><th>DISPLAY NAME</th><th>STATUS</th><th>ACTIONS</th></tr></thead><tbody id="agent-rows"></tbody></table></div></section>
@@ -117,11 +124,11 @@
 <section id="archive-page" class="panel" hidden><div class="panelhead"><strong>▤ INTELLIGENCE ARCHIVE / CASE FILES</strong><span class="code">FIRST LIGHT</span></div><div class="mission-content"><h2>Directorate Personnel & Subjects</h2><p>Case records distinguish confirmed information from unverified assessments. Ask ARGUS about any of these files.</p><div class="mission-step"><strong>DIRECTORATE / AGENCY PROFILE</strong><p>An international intelligence organization investigating communications and information-security threats. Technical Agents analyze evidence remotely; field operatives collect physical evidence.</p></div><div class="dossier-grid">
 <article class="dossier-card"><img src="assets/kestrel-dossier.jpg" alt="Kestrel, Directorate field operative in outdoor operational clothing" loading="lazy"><div class="dossier-body"><div class="dossier-role">FIELD OPERATIONS / ACTIVE</div><h3>KESTREL</h3><p>Directorate field operative. Conducts on-site investigations, surveillance, and evidence recovery. Resourceful, decisive and highly adaptable. Relies on the Agent for technical interpretation.</p><p class="dossier-note">SPECIALTIES / Field reconnaissance · asset recovery · source contact</p></div></article>
 <article class="dossier-card"><img src="assets/rook-dossier.jpg" alt="Rook, Directorate intelligence analyst at his workstation" loading="lazy"><div class="dossier-body"><div class="dossier-role">INTELLIGENCE ANALYSIS / ACTIVE</div><h3>ROOK</h3><p>Senior Directorate intelligence analyst. Coordinates evidence review, identifies inconsistencies, and evaluates competing explanations. Methodical, skeptical and precise.</p><p class="dossier-note">SPECIALTIES / Data analysis · intelligence assessment · operational coordination</p></div></article>
-<article class="dossier-card"><img src="assets/voss-dossier.jpg" alt="Elias Voss, communications systems engineer in an older personnel photograph" loading="lazy"><div class="dossier-body"><div class="dossier-role">SYSTEMS ENGINEERING / MISSING</div><h3>ELIAS VOSS</h3><p>Communications systems engineer associated with NIGHTGLASS. His involvement in the programme's reactivation remains unconfirmed. Investigation ongoing.</p><p class="dossier-note">SPECIALTIES / Communications systems · signal analysis · network architecture</p></div></article>
-</div><div class="mission-step"><strong>VEYLAND / REGIONAL BRIEFING</strong><p>Northern European country with forests, aging relay facilities and decommissioned industrial sites. Greyhaven Relay Annex is officially inactive.</p></div><div class="mission-step"><strong>NIGHTGLASS / LIMITED PROGRAMME SUMMARY</strong><p>Former Directorate communications-intelligence programme, officially discontinued. Most operational records remain restricted. Voss was associated with its development.</p></div><div class="mission-step"><strong>ARGUS / ADVISORY SERVICE</strong><p>Agency Research & Guidance Utility System. Supports coding, evidence interpretation and investigative reasoning. Cannot access your local computer or independently verify mission submissions.</p></div></div></section>
+<article class="dossier-card" id="voss-dossier" hidden><img src="assets/voss-dossier.jpg" alt="Elias Voss, communications systems engineer in an older personnel photograph" loading="lazy"><div class="dossier-body"><div class="dossier-role" id="voss-status">SYSTEMS ENGINEERING / SUBJECT OF INTEREST</div><h3>ELIAS VOSS</h3><p id="voss-summary">Communications systems engineer identified in a recovered transmission. Directorate personnel records are being reviewed.</p><p class="dossier-note">SPECIALTIES / Communications systems · signal analysis · network architecture</p></div></article>
+</div><div class="mission-step"><strong>VEYLAND / REGIONAL BRIEFING</strong><p>Northern European country with forests, aging relay facilities and decommissioned industrial sites. <span id="greyhaven-archive" hidden>Greyhaven Relay Annex is officially inactive.</span></p></div><div class="mission-step" id="nightglass-dossier" hidden><strong>NIGHTGLASS / LIMITED PROGRAMME SUMMARY</strong><p>Former Directorate communications-intelligence programme, officially discontinued. Most operational records remain restricted. Voss was associated with its development.</p></div><div class="mission-step"><strong>ARGUS / ADVISORY SERVICE</strong><p>Agency Research & Guidance Utility System. Supports coding, evidence interpretation and investigative reasoning. Cannot access your local computer or independently verify mission submissions.</p></div></div></section>
 <section id="systems-page" class="panel" hidden><div class="panelhead"><strong>⌘ SYSTEMS / WORKSTATION STATUS</strong><span class="code">SD-01</span></div><div class="mission-content"><div class="mission-step"><strong>ARGUS ADVISORY SERVICE</strong><p>AVAILABLE / Subject to network connectivity and service availability</p></div><div class="mission-step"><strong>DIRECTORATE COMMUNICATIONS</strong><p>AUTHENTICATED / HTTPS transport</p></div><div class="mission-step"><strong>INTELLIGENCE ARCHIVE</strong><p>AVAILABLE / Agent-specific mission access controls</p></div><div class="mission-step"><strong>WORKSTATION PREFERENCES</strong><p>Orientation briefing may be reviewed at any time.</p><button type="button" class="button secondary small" id="replay-orientation">REVIEW ORIENTATION</button></div><div class="mission-step"><strong>ADVANCED DIAGNOSTICS</strong><p>RESTRICTED / Not yet commissioned</p></div></div></section>
 <section id="other" class="panel" hidden><div class="panelhead"><strong id="other-label">MODULE</strong><span class="code">AWAITING COMMISSIONING</span></div><div class="placeholder"><h2 id="other-title">Module unavailable</h2><p id="other-description">This module is awaiting commissioning.</p></div></section>
-<footer><span>DIRECTORATE SIGNALS DIVISION / TRAINING NETWORK</span><span>ARGUS v1.7 / FIRST LIGHT</span></footer></main></div>
+<footer><span>DIRECTORATE SIGNALS DIVISION / TRAINING NETWORK</span><span>ARGUS v1.9.1 / FIRST LIGHT</span></footer></main></div>
 <div id="modal-backdrop" class="modal-backdrop" hidden><div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title"><h2 id="modal-title"></h2><p id="modal-description"></p><form id="modal-form"><div id="modal-fields"></div><div id="modal-error" class="error" role="alert"></div><div class="modal-actions"><button id="modal-cancel" type="button" class="button secondary">CANCEL</button><button id="modal-confirm" type="submit" class="button">CONFIRM</button></div></form></div></div>
 <div id="orientation-layer" hidden role="dialog" aria-modal="true" aria-labelledby="orientation-title"><section id="orientation-panel" tabindex="-1"><div id="orientation-progress"></div><h2 id="orientation-title"></h2><p id="orientation-copy"></p><div id="orientation-error" role="status"></div><div id="orientation-controls"><button type="button" id="orientation-back" class="button secondary small">← PREVIOUS</button><button type="button" id="orientation-next" class="button small">CONTINUE →</button></div></section></div>
 <script>
@@ -206,7 +213,8 @@ async function navigate(page){
   else if(page==='personnel')await loadAgents();
    else if(page==='assignments')await loadAssignments();
   else if(page==='toolkit'){renderToolkit();}
-  else if(page==='archive'||page==='systems'){}
+  else if(page==='archive'){await refreshArchiveClearance();}
+  else if(page==='systems'){}
   else{
     $('other-label').textContent=names[page].toUpperCase();$('other-title').textContent=names[page]+' / Pending';
     $('other-description').textContent=page==='assignments'?'No active assignments have been issued. The mission system is under development.':page==='archive'?'The Intelligence Archive will become available with the mission system.':'Systems diagnostics and additional controls are awaiting commissioning.';
@@ -836,6 +844,17 @@ for(let stage=1;stage<=3;stage++)$('m06-form'+stage).addEventListener('submit',a
 });
 
 
+// Clearance is computed by the Worker from verified mission completions, never local state.
+async function refreshArchiveClearance(){
+ const v=$('voss-dossier'),n=$('nightglass-dossier'),g=$('greyhaven-archive');
+ v.hidden=true;n.hidden=true;g.hidden=true;
+ try{
+  const data=await apiRequest('/archive/clearance');const level=Number(data.level||0);
+  v.hidden=level<2;g.hidden=level<3;n.hidden=level<6;
+  $('voss-status').textContent=level>=6?'SYSTEMS ENGINEERING / LOCATED IN TRANSMISSION':level>=5?'SYSTEMS ENGINEERING / WHEREABOUTS UNCONFIRMED':'SYSTEMS ENGINEERING / SUBJECT OF INTEREST';
+  $('voss-summary').textContent=level>=6?'Recovered transmission confirms Voss was alive when recorded. His current location is unknown. His connection to NIGHTGLASS is under investigation.':level>=5?'Communications engineer identified in the intercepted signal. Security records associated with his movements contain inconsistencies. His whereabouts remain unconfirmed.':level>=3?'Communications engineer identified in an intercepted transmission. Field evidence connects him to Greyhaven Relay Annex. His whereabouts remain unconfirmed.':'Communications systems engineer identified in a recovered transmission. Directorate personnel records are being reviewed.';
+ }catch(e){console.warn('Archive clearance unavailable:',e.message);}
+}
 // Directorate orientation: account-level completion is stored in D1, not browser storage.
 const orientationSteps=[
  {title:'DIRECTORATE / SIGNALS DIVISION',copy:'Welcome, Agent. You are joining the Directorate as a technical specialist. Our field operatives recover evidence; your task is to examine it, identify what matters, and report verified findings. This briefing will familiarize you with your workstation.',page:'communications',target:'.brand'},
@@ -853,25 +872,12 @@ async function checkOrientation(){
  try{const data=await apiRequest('/orientation');if(!data.completed)await startOrientation();}
  catch(error){console.warn('Orientation status unavailable:',error.message);}
 }
-async function startOrientation(){orientationIndex=0;orientationActive=true;$('orientation-layer').hidden=false;await showOrientationStep();}
+async function startOrientation(){orientationIndex=0;orientationActive=true;document.body.classList.add('orientation-active');$('orientation-layer').hidden=false;await showOrientationStep();}
 function positionOrientationPanel(target){
- const panel=$('orientation-panel');panel.style.left='';panel.style.right='';panel.style.top='';panel.style.bottom='';
- const margin=16, vw=window.innerWidth,vh=window.innerHeight;
- panel.style.maxHeight=Math.min(vh-2*margin,540)+'px';
- const pw=Math.min(420,vw-2*margin);panel.style.width=pw+'px';
- const ph=Math.min(panel.scrollHeight,vh-2*margin);
- const t=target?.getBoundingClientRect();
- const choices=[
-  {x:margin,y:margin},{x:vw-pw-margin,y:margin},
-  {x:margin,y:vh-ph-margin},{x:vw-pw-margin,y:vh-ph-margin}
- ];
- if(t){
-  choices.push({x:Math.max(margin,Math.min(vw-pw-margin,t.left)),y:Math.max(margin,Math.min(vh-ph-margin,t.bottom+16))});
-  choices.push({x:Math.max(margin,Math.min(vw-pw-margin,t.left)),y:Math.max(margin,Math.min(vh-ph-margin,t.top-ph-16))});
- }
- const area=c=>{if(!t)return 0;const x=Math.max(0,Math.min(c.x+pw,t.right+8)-Math.max(c.x,t.left-8));const y=Math.max(0,Math.min(c.y+ph,t.bottom+8)-Math.max(c.y,t.top-8));return x*y;};
- choices.sort((a,b)=>area(a)-area(b));
- panel.style.left=choices[0].x+'px';panel.style.top=choices[0].y+'px';
+ const mobile=window.innerWidth<=780;
+ document.body.style.setProperty('--orientation-rail',Math.min(420,Math.round(window.innerWidth*.44))+'px');
+ if(mobile)document.body.style.setProperty('--orientation-rail-height',Math.ceil($('orientation-panel').getBoundingClientRect().height+20)+'px');
+ if(target){target.scrollIntoView({block:'center',inline:'nearest',behavior:'instant'});}
 }
 window.addEventListener('resize',()=>{if(orientationActive)positionOrientationPanel(document.querySelector(orientationSteps[orientationIndex].target));});
 async function showOrientationStep(){
@@ -889,7 +895,7 @@ $('orientation-next').addEventListener('click',async()=>{
  if(orientationSaving)return;
  if(orientationIndex<orientationSteps.length-1){orientationIndex++;await showOrientationStep();return;}
  orientationSaving=true;$('orientation-next').disabled=true;
- try{await apiRequest('/orientation/complete',{method:'POST',body:'{}'});orientationActive=false;$('orientation-layer').hidden=true;clearOrientationFocus();await navigate('assignments');}
+ try{await apiRequest('/orientation/complete',{method:'POST',body:'{}'});orientationActive=false;document.body.classList.remove('orientation-active');$('orientation-layer').hidden=true;clearOrientationFocus();await navigate('assignments');}
  catch(error){$('orientation-error').textContent='Unable to record acknowledgement: '+error.message;}
  finally{orientationSaving=false;$('orientation-next').disabled=false;}
 });
