@@ -40,11 +40,11 @@
 <body>
 <header><div class="brand"><div class="sigil"><span>⌁</span></div><div><strong>THE DIRECTORATE</strong><div class="eyebrow">Signals Division / Internal Network</div></div></div><div class="session-tools"><span class="status">LINK ESTABLISHED</span><span id="identity" class="code"></span><button id="logout" class="button secondary small" hidden>SIGN OUT</button></div></header>
 <section id="auth-screen" class="auth-screen"><form id="login-form" class="auth-card"><div class="eyebrow">Directorate / Identity Verification</div><h1>Secure Access</h1><p>Signals Division personnel only. Authenticate to enter your workstation.</p><label class="field-label" for="username">OPERATIVE ID</label><input class="field" id="username" autocomplete="username" required maxlength="32"><label class="field-label" for="password">PASSPHRASE</label><input class="field" id="password" type="password" autocomplete="current-password" required><button class="button" id="login-button" type="submit">AUTHENTICATE</button><div id="auth-error" class="auth-error" role="alert"></div></form></section>
-<div id="portal" class="shell" hidden><aside><div class="eyebrow">Workstation / 01</div><nav id="nav"><button class="active" data-page="communications"><span>◈</span> COMMUNICATIONS</button><button data-page="assignments"><span>◇</span> ASSIGNMENTS</button><button data-page="archive"><span>▤</span> INTELLIGENCE ARCHIVE</button><button data-page="systems"><span>⌘</span> SYSTEMS</button><button id="personnel-nav" data-page="personnel" hidden><span>♙</span> PERSONNEL</button></nav><div class="ops-nav" id="ops-nav" hidden><div class="eyebrow">FIRST LIGHT / ASSIGNMENTS</div><button type="button" id="ops-select-01" data-mission="01">01 / THE NEW RECRUIT</button><button type="button" id="ops-select-02" data-mission="02" hidden>02 / NUMBERS STATION</button><button type="button" id="ops-select-03" data-mission="03" hidden>03 / THE PHOTOGRAPH</button><button type="button" id="ops-select-locked" disabled hidden>04 / CLASSIFIED</button></div><div class="asidefoot">DIRECTORATE / INTERNAL<br>CHANNEL: AUTHENTICATED<br>TRANSPORT: HTTPS<br>BUILD: 1.4.2</div></aside>
+<div id="portal" class="shell" hidden><aside><div class="eyebrow">Workstation / 01</div><nav id="nav"><button class="active" data-page="communications"><span>◈</span> COMMUNICATIONS</button><button data-page="assignments"><span>◇</span> ASSIGNMENTS</button><button data-page="archive"><span>▤</span> INTELLIGENCE ARCHIVE</button><button data-page="systems"><span>⌘</span> SYSTEMS</button><button id="personnel-nav" data-page="personnel" hidden><span>♙</span> PERSONNEL</button></nav><div class="ops-nav" id="ops-nav" hidden><div class="eyebrow">FIRST LIGHT / ASSIGNMENTS</div><button type="button" id="ops-select-01" data-mission="01">01 / THE NEW RECRUIT</button><button type="button" id="ops-select-02" data-mission="02" hidden>02 / NUMBERS STATION</button><button type="button" id="ops-select-03" data-mission="03" hidden>03 / THE PHOTOGRAPH</button><button id="ops-select-04" type="button" hidden>04 / DEAD DROP</button><button type="button" id="ops-select-locked" disabled hidden>04 / CLASSIFIED</button></div><div class="asidefoot">DIRECTORATE / INTERNAL<br>CHANNEL: AUTHENTICATED<br>TRANSPORT: HTTPS<br>BUILD: 1.4.2</div></aside>
 <main><div class="topline"><div><div class="eyebrow">Operations / Technical advisory</div><h1 id="heading">Communications</h1></div><div class="code">NODE SD-01 / AUTHENTICATED TERMINAL</div></div>
 <div id="communications" class="dashboard"><section class="panel"><div class="panelhead"><strong>ARGUS / ADVISORY CHANNEL</strong><div class="inline-tools"><span id="connection-status" class="code">STANDBY</span><button id="new-conversation" class="button secondary small">NEW CONVERSATION</button></div></div><div class="chat" id="chat" role="log" aria-label="ARGUS conversation" aria-live="polite"></div><form id="chat-form" class="compose"><textarea id="chat-input" maxlength="3000" placeholder="ENTER TRANSMISSION..." aria-label="Message to ARGUS" required></textarea><button id="chat-send" class="button" type="submit">TRANSMIT ↗</button></form><div class="below-compose"><span id="chat-feedback" class="code" role="status"></span><span class="code">ENTER TO SEND · SHIFT+ENTER FOR NEW LINE</span></div></section><div class="sidecards"><section class="panel"><div class="panelhead"><strong>ARGUS CORE</strong><span class="code">A-01</span></div><div class="diagram"><div class="rings"></div></div><div class="metric"><div class="eyebrow">Agency Research &amp; Guidance Utility System</div><h3>TECHNICAL ADVISOR / ONLINE</h3><p>Ask questions, learn programming, or debug your own code.</p></div></section><section class="panel"><div class="panelhead"><strong>OPERATIONAL STATUS</strong></div><div class="metric"><div class="eyebrow">Assignment queue</div><h3>NO ACTIVE DIRECTIVES</h3><p>Mission assignments are not yet commissioned.</p></div></section><div class="notice">FICTIONAL TRAINING NETWORK. DO NOT TRANSMIT PASSWORDS, API KEYS OR PERSONAL INFORMATION.</div></div></div>
 <section id="personnel" class="panel" hidden><div class="panelhead"><strong>PERSONNEL / AGENT ROSTER</strong><span class="code">DIRECTOR CLEARANCE</span></div><div class="personnel-toolbar"><span id="personnel-feedback" class="code"></span><button id="add-agent" class="button">+ REGISTER AGENT</button></div><div class="table-wrap"><table><thead><tr><th>OPERATIVE ID</th><th>DISPLAY NAME</th><th>STATUS</th><th>ACTIONS</th></tr></thead><tbody id="agent-rows"></tbody></table></div></section>
-<div id="ops-layout" class="ops-layout" hidden><div id="ops-main" class="ops-main"><div id="ops-objective" class="ops-objective"><div class="eyebrow">CURRENT OBJECTIVE</div><strong id="ops-objective-text">Retrieving assignment...</strong><div class="code" id="ops-objective-detail"></div></div><div id="mission-selector" class="mission-nav" hidden><div class="mission-nav-top"><div><div class="eyebrow">SELECTED ASSIGNMENT</div><strong id="mission-current-label">01 — THE NEW RECRUIT</strong></div><button id="mission-menu-toggle" type="button" class="button secondary small" aria-expanded="false" aria-controls="mission-menu">MISSION LIST ▾</button></div><div id="mission-menu" class="mission-menu" hidden><button id="select-m01" type="button" class="button secondary">01 — THE NEW RECRUIT</button><button id="select-m02" type="button" class="button secondary" hidden>02 — NUMBERS STATION</button><button id="select-m03" type="button" class="button secondary" hidden>03 — THE PHOTOGRAPH</button></div></div>
+<div id="ops-layout" class="ops-layout" hidden><div id="ops-main" class="ops-main"><div id="ops-objective" class="ops-objective"><div class="eyebrow">CURRENT OBJECTIVE</div><strong id="ops-objective-text">Retrieving assignment...</strong><div class="code" id="ops-objective-detail"></div></div><div id="mission-selector" class="mission-nav" hidden><div class="mission-nav-top"><div><div class="eyebrow">SELECTED ASSIGNMENT</div><strong id="mission-current-label">01 — THE NEW RECRUIT</strong></div><button id="mission-menu-toggle" type="button" class="button secondary small" aria-expanded="false" aria-controls="mission-menu">MISSION LIST ▾</button></div><div id="mission-menu" class="mission-menu" hidden><button id="select-m01" type="button" class="button secondary">01 — THE NEW RECRUIT</button><button id="select-m02" type="button" class="button secondary" hidden>02 — NUMBERS STATION</button><button id="select-m03" type="button" class="button secondary" hidden>03 — THE PHOTOGRAPH</button><button id="select-m04" type="button" class="button secondary" hidden>04 — DEAD DROP</button></div></div>
 <section id="assignments-panel" class="panel" hidden><div class="panelhead"><strong>OPERATIONS / FIRST LIGHT</strong><span id="mission-status" class="code">AWAITING BRIEFING</span></div><div class="mission-content"><div class="eyebrow">OPERATION FIRST LIGHT · MISSION 01</div><h2>The New Recruit</h2><div class="transmission"><strong>ARGUS — INITIAL BRIEFING</strong><p>Welcome to Signals Division, Agent. Before you can assist Kestrel in the field, we must verify your workstation. You will install two legitimate development tools, run a diagnostic on your own computer, and return its activation response. I can guide you, but only you can operate your computer.</p></div><div id="mission-complete" hidden><div class="transmission"><strong>WORKSTATION VERIFIED — MISSION COMPLETE</strong><p>KESTREL: Good. You're online. I've just received something rather strange from Station 17. Stand by for your next assignment.</p><p>Mission 02 — Numbers Station is now available below.</p></div></div><div id="mission-active"><h3>Workstation setup</h3><div class="mission-step"><strong>1. Install Python</strong><p>Download Python from <a href="https://www.python.org/downloads/" target="_blank" rel="noopener noreferrer">python.org</a>. On Windows, make sure the Python launcher is installed. Open PowerShell and try <code>py --version</code> (or <code>python --version</code>).</p></div><div class="mission-step"><strong>2. Install VS Code</strong><p>Download Visual Studio Code from <a href="https://code.visualstudio.com/" target="_blank" rel="noopener noreferrer">code.visualstudio.com</a>. Create a folder named <code>Directorate</code> inside Documents.</p></div><div class="mission-step"><strong>3. Download your diagnostic package</strong><p>Save both files into the same <code>Directorate</code> folder. The activation file is unique to your Agent account.</p><div class="mission-actions"><button class="button" id="download-diagnostic" type="button">DOWNLOAD DIAGNOSTIC.PY</button><button class="button secondary" id="download-challenge" type="button">DOWNLOAD ACTIVATION.TXT</button></div></div><div class="mission-step"><strong>4. Run the diagnostic</strong><p>Open <code>workstation_diagnostic.py</code> in VS Code. Open its terminal, make sure the terminal is in the same folder as both files, and run:</p><pre><code>py workstation_diagnostic.py</code></pre><p>If <code>py</code> isn't recognized, try <code>python workstation_diagnostic.py</code>. Ask ARGUS for help if anything goes wrong.</p></div><div class="mission-step"><strong>5. Transmit activation response</strong><p>Copy the 64-character response printed by your Python program and paste it below.</p><form id="mission-form"><label class="field-label" for="activation-response">ACTIVATION RESPONSE</label><input id="activation-response" class="mission-input" maxlength="64" autocomplete="off" spellcheck="false" required placeholder="Paste diagnostic output here"><div class="mission-actions"><button class="button" id="mission-verify" type="submit">VERIFY WORKSTATION</button></div></form><div id="mission-feedback" class="code" role="status"></div></div></div></div></section>
 
 <section id="mission02-panel" class="panel" hidden><div class="panelhead"><strong>FIRST LIGHT / MISSION 02 — NUMBERS STATION</strong><span id="m02-status" class="code">INTERCEPT PENDING</span></div><div class="mission-content"><h2>Numbers Station</h2><div class="transmission" id="m02-old-transmission" hidden><strong>KESTREL / FIELD COMMUNICATIONS</strong><p id="m02-transmission">I've picked up a coded radio signal near Station 17. I need you to identify what it says.</p></div><div id="m02-active"><div class="signal-panel"><div class="eyebrow">INTERCEPT MONITOR / RECORDED SIGNAL</div><div class="signal-bars" aria-hidden="true"><i style="height:14px"></i><i style="height:27px"></i><i style="height:43px"></i><i style="height:20px"></i><i style="height:60px"></i><i style="height:37px"></i><i style="height:18px"></i><i style="height:65px"></i><i style="height:33px"></i><i style="height:55px"></i><i style="height:26px"></i><i style="height:42px"></i><i style="height:70px"></i><i style="height:20px"></i><i style="height:47px"></i><i style="height:36px"></i><i style="height:59px"></i><i style="height:22px"></i><i style="height:44px"></i><i style="height:17px"></i><i style="height:52px"></i><i style="height:30px"></i><i style="height:66px"></i><i style="height:25px"></i><i style="height:41px"></i><i style="height:57px"></i><i style="height:19px"></i><i style="height:35px"></i><i style="height:50px"></i><i style="height:23px"></i></div><div class="code">SIGNAL CLASS: ENCODED ALPHABETIC TRANSMISSION</div></div><h3>Intercept transcript</h3><pre class="mission-block" id="m02-intercept"></pre><p>The signal uses a <strong>Caesar cipher</strong>: each letter has been moved forward by the same number of positions. Download the decoder, open it in VS Code, and change the <code>offset</code> variable. Run it locally until the message makes sense.</p><div class="mission-actions"><button class="button" id="m02-download" type="button">DOWNLOAD DECODER.PY</button><button class="button secondary" id="m02-transcript-download" type="button">DOWNLOAD INTERCEPT.TXT</button></div><div class="mission-step"><strong>Run the decoder</strong><pre><code>py decoder.py</code></pre><p>Try different values for <code>offset</code> from 1 to 25. When you see readable English, copy the entire decoded line below. Ask ARGUS for hints if needed.</p></div><form id="m02-form"><label class="field-label" for="m02-answer">DECODED TRANSMISSION</label><input id="m02-answer" class="mission-input" maxlength="160" autocomplete="off" spellcheck="false" required placeholder="Enter the entire decoded message"><div class="mission-actions"><button class="button" id="m02-verify" type="submit">TRANSMIT FINDINGS TO KESTREL</button></div></form></div><div id="m02-complete" hidden><div class="ops-next"><strong>MISSION COMPLETE / BOTH INTERCEPTS VERIFIED</strong><p>Further orders will be issued through Field Communications.</p></div></div><div class="code" id="m02-feedback" role="status"></div><div id="m02-evidence" class="evidence-log"></div></div></section>
@@ -65,8 +65,20 @@
 <div id="m03-active"><form id="m03-form"><label class="field-label" for="m03-facility">FACILITY IDENTIFIED</label><select class="field" id="m03-facility" required><option value="">Select facility from map</option></select><label class="field-label" for="m03-date">ORIGINAL CAPTURE DATE (YYYY-MM-DD)</label><input class="field" id="m03-date" placeholder="YYYY-MM-DD" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"><label class="field-label" for="m03-camera">CAMERA MODEL (FROM EXIF)</label><input class="field" id="m03-camera" required placeholder="Camera model" maxlength="60"><div class="mission-actions"><button id="m03-verify" class="button" type="submit">SEND FINDINGS TO KESTREL</button></div></form></div>
 <div id="m03-complete" class="ops-next" hidden><div class="eyebrow">DIRECTORATE / OPERATIONS CONTROL · FINAL MISSION REPORT</div><h3 style="margin:10px 0">The Photograph</h3><strong>ASSIGNMENT CONCLUDED — INTELLIGENCE VERIFIED</strong><p><strong>Operational summary:</strong> The recovered photograph has been authenticated. Its embedded location, capture date, and camera model were examined and the facility identified as Greyhaven Relay Annex.</p><p><strong>Field outcome:</strong> Kestrel has received the verified location and is investigating the site. The original evidence remains available in the case archive.</p><p><strong>Directorate status:</strong> Agent released to operational standby. Further instructions will be issued through official channels.</p><div class="code">REPORT FILED / OPERATION FIRST LIGHT / M03</div></div>
 <div id="m03-feedback" class="code" role="status"></div><details class="ops-archive"><summary>▤ EVIDENCE ARCHIVE / PERMANENT RECORD</summary><div id="m03-evidence" class="evidence-log"></div></details></div></section>
+
+<section id="mission04-panel" class="panel" hidden><div class="panelhead"><strong>FIRST LIGHT / MISSION 04 — DEAD DROP</strong><span class="code" id="m04-status">STANDBY</span></div>
+<div class="mission-content"><h2>Dead Drop</h2><p>Kestrel has reached Greyhaven Relay Annex. Behind a damaged access hatch, she found a maintenance-terminal archive. The records may contain instructions for opening a sealed compartment. She needs you to decipher the service note.</p>
+<div class="ops-objective"><div class="eyebrow">RECOVERED EVIDENCE / GH-MAINT-07</div><strong>MAINTENANCE ARCHIVE</strong><p>Download the ZIP archive. Extract it into a new folder on your workstation. Preserve the original archive, then inspect the recovered files.</p></div>
+<div class="mission-actions"><button id="m04-download" type="button" class="button">DOWNLOAD MAINTENANCE ARCHIVE (.ZIP)</button><button id="m04-toolkit" type="button" class="button secondary">DOWNLOAD FIELD TOOLKIT (.PY)</button></div>
+<div id="m04-active"><h3>Field instructions</h3><div class="mission-step"><strong>1. Examine the archive</strong><p>In Windows, right-click the downloaded ZIP and select <code>Extract All</code>. Look through the recovered folders. Open the text files with VS Code. Do not edit the original evidence.</p></div>
+<div class="mission-step"><strong>2. Recover the service instruction</strong><p>One note contains a shifted alphabetic message. Reuse your decoder from Mission 02 or the Field Toolkit. Try different offsets until the message makes sense. The encrypted text is evidence, not an answer to copy unchanged.</p></div>
+<div class="mission-step"><strong>3. Authenticate the dead drop</strong><p>Report the access panel number and authentication phrase found in the decoded service instruction. Kestrel will attempt to open the compartment.</p>
+<form id="m04-form"><label class="field-label" for="m04-panel-input">ACCESS PANEL NUMBER</label><input class="mission-input" id="m04-panel-input" maxlength="24" required autocomplete="off" placeholder="Panel number"><label class="field-label" for="m04-phrase">AUTHENTICATION PHRASE</label><input class="mission-input" id="m04-phrase" maxlength="100" required autocomplete="off" placeholder="Recovered phrase"><div class="mission-actions"><button id="m04-verify" type="submit" class="button">TRANSMIT TO KESTREL</button></div></form></div></div>
+<div id="m04-complete" class="ops-next" hidden><div class="eyebrow">DIRECTORATE / OPERATIONS CONTROL · FINAL MISSION REPORT</div><h3>Dead Drop</h3><strong>ASSIGNMENT CONCLUDED — AUTHENTICATION VERIFIED</strong><p><strong>Operational summary:</strong> The recovered maintenance archive was extracted and the encoded service instruction decoded. Kestrel authenticated the sealed compartment and retrieved a handwritten note.</p><p><strong>Field outcome:</strong> The note reads: <em>“If the records disagree, trust the original.”</em> Rook is reviewing its implications.</p><p><strong>Directorate status:</strong> Agent released to operational standby. Further instructions will be issued through official channels.</p></div>
+<div id="m04-feedback" class="code" role="status"></div><details class="ops-archive"><summary>▤ EVIDENCE ARCHIVE / PERMANENT RECORD</summary><div id="m04-evidence" class="evidence-log"></div></details>
+</div></section>
 </div><section id="ops-comms" class="panel ops-side" aria-label="Field Communications"><div class="panelhead"><strong>◈ FIELD COMMUNICATIONS</strong><span id="ops-comms-status" class="code">SECURE CHANNEL</span></div><div id="ops-comms-log" class="ops-comms-log" role="log" aria-label="Field messages"></div><div class="ops-comms-footer">DIRECTORATE / FIELD OPERATIONS<br>Messages are delivered when operationally available. ARGUS advisory remains in Communications.</div></section></div><section id="other" class="panel" hidden><div class="panelhead"><strong id="other-label">MODULE</strong><span class="code">AWAITING COMMISSIONING</span></div><div class="placeholder"><h2 id="other-title">Module unavailable</h2><p id="other-description">This module is awaiting commissioning.</p></div></section>
-<footer><span>DIRECTORATE SIGNALS DIVISION / TRAINING NETWORK</span><span>ARGUS v1.4.2 / FIRST LIGHT</span></footer></main></div>
+<footer><span>DIRECTORATE SIGNALS DIVISION / TRAINING NETWORK</span><span>ARGUS v1.5 / FIRST LIGHT</span></footer></main></div>
 <div id="modal-backdrop" class="modal-backdrop" hidden><div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title"><h2 id="modal-title"></h2><p id="modal-description"></p><form id="modal-form"><div id="modal-fields"></div><div id="modal-error" class="error" role="alert"></div><div class="modal-actions"><button id="modal-cancel" type="button" class="button secondary">CANCEL</button><button id="modal-confirm" type="submit" class="button">CONFIRM</button></div></form></div></div>
 <script>
 'use strict';
@@ -75,6 +87,7 @@ const SESSION_KEY='argus_session_v04';
 let missionChallenge=null;
 let mission02Data=null;
 let mission03Data=null;
+let mission04Data=null;
 let selectedMission=sessionStorage.getItem('argus_v11_mission_selected')||'01';
 let transmissionGeneration=0;
 let missionAnimationPlayed=new Set();
@@ -390,6 +403,9 @@ function updateOpsObjective(){
  if(selectedMission==='01'){
   $('ops-objective-text').textContent=m01done?'Workstation activated':'Verify your workstation';
   $('ops-objective-detail').textContent=m01done?'MISSION 01 COMPLETE':'Download the diagnostic package, run it locally, and submit your activation response.';
+ }else if(selectedMission==='04'&&mission04Data){
+  $('ops-objective-text').textContent=mission04Data.completed?'Dead drop authenticated':'Recover the compartment instructions';
+  $('ops-objective-detail').textContent=mission04Data.completed?'Mission 04 complete. Await Directorate recall.':'Extract the maintenance archive, decode the service note, and send Kestrel the access panel and phrase.';
  }else if(selectedMission==='03'&&mission03Data){
   $('ops-objective-text').textContent=mission03Data.completed?'Photograph geolocated':'Identify the photographed facility';
   $('ops-objective-detail').textContent=mission03Data.completed?'Mission 03 complete. Kestrel is investigating.':'Download the original JPEG, inspect its EXIF metadata, compare GPS to the map, and report the capture date and camera model.';
@@ -404,6 +420,9 @@ function fieldMessages(){
  if(selectedMission==='01'){
   if(!$('mission-complete').hidden)msgs.push({key:'m01-end',who:'KESTREL / FIELD OPERATIVE',text:"Good. You're online. I've just received something rather strange from Station 17. Stand by for your next assignment."});
   else msgs.push({key:'m01-argus',who:'ARGUS / BRIEFING',text:'Welcome to Signals Division. Complete your workstation diagnostic to establish field communications.'});
+ }else if(selectedMission==='04'&&mission04Data){
+  msgs.push({key:'m04-start',who:'KESTREL / FIELD OPERATIVE',text:'I am inside Greyhaven. Found a maintenance archive, but the service note is encoded. Can you recover the compartment instructions?'});
+  if(mission04Data.completed)msgs.push({key:'m04-end',who:'KESTREL / FIELD OPERATIVE',text:'Panel Seven opened. There was a handwritten note inside: If the records disagree, trust the original. I am sending it to Rook.'});
  }else if(selectedMission==='03'&&mission03Data){
   msgs.push({key:'m03-start',who:'KESTREL / FIELD OPERATIVE',text:'I found Voss’s abandoned vehicle. There was a camera memory card inside. One photograph looks promising. Can you tell me where it was taken?'});
   if(mission03Data.completed)msgs.push({key:'m03-end',who:'KESTREL / FIELD OPERATIVE',text:'Greyhaven Relay Annex. The place has been listed as abandoned for years. I am going to take a look. Keep the original photograph safe.'});
@@ -432,7 +451,7 @@ async function renderFieldConsole(animate=false,latestText=''){
  }
  log.scrollTop=log.scrollHeight;
 }
-for(const [id,mission] of [['ops-select-01','01'],['ops-select-02','02'],['ops-select-03','03']]){
+for(const [id,mission] of [['ops-select-01','01'],['ops-select-02','02'],['ops-select-03','03'],['ops-select-04','04']]){
  $(id).addEventListener('click',()=>{transmissionGeneration++;selectedMission=mission;sessionStorage.setItem('argus_v11_mission_selected',mission);showSelectedMission();});
 }
 // Move the large evidence record into a collapsible archive; no loss of data.
@@ -445,28 +464,35 @@ $('mission-menu-toggle').addEventListener('click',()=>{const next=!$('mission-me
 function showSelectedMission(){
  const m01done=!$('mission-complete').hidden;
  if(!m01done)selectedMission='01';
+ if(selectedMission==='04'&&!mission03Data?.completed)selectedMission=mission02Data?.completed?'03':'02';
  if(selectedMission==='03'&&!mission02Data?.completed)selectedMission=m01done?'02':'01';
  $('assignments-panel').hidden=selectedMission!=='01';
  $('mission02-panel').hidden=selectedMission!=='02'||!m01done;
  $('mission03-panel').hidden=selectedMission!=='03'||!mission02Data?.completed;
+ $('mission04-panel').hidden=selectedMission!=='04'||!mission03Data?.completed;
  $('select-m01').classList.toggle('selected',selectedMission==='01');
  $('select-m02').classList.toggle('selected',selectedMission==='02');
  $('select-m03').classList.toggle('selected',selectedMission==='03');
+ $('select-m04').classList.toggle('selected',selectedMission==='04');
+ $('select-m04').hidden=!mission03Data?.completed;
  $('select-m03').hidden=!mission02Data?.completed;
  $('select-m02').hidden=!m01done;
  $('select-m01').textContent='01 — THE NEW RECRUIT'+(m01done?' / COMPLETE':' / ACTIVE');
  $('select-m02').textContent='02 — NUMBERS STATION'+(mission02Data?.completed?' / COMPLETE':' / ACTIVE');
  $('select-m03').textContent='03 — THE PHOTOGRAPH'+(mission03Data?.completed?' / COMPLETE':' / ACTIVE');
- $('mission-current-label').textContent=selectedMission==='01'?'01 — THE NEW RECRUIT':selectedMission==='02'?'02 — NUMBERS STATION':'03 — THE PHOTOGRAPH';
+ $('select-m04').textContent='04 — DEAD DROP'+(mission04Data?.completed?' / COMPLETE':' / ACTIVE');
+ $('mission-current-label').textContent=selectedMission==='01'?'01 — THE NEW RECRUIT':selectedMission==='02'?'02 — NUMBERS STATION':selectedMission==='03'?'03 — THE PHOTOGRAPH':'04 — DEAD DROP';
  $('ops-select-01').classList.toggle('selected',selectedMission==='01');
  $('ops-select-02').classList.toggle('selected',selectedMission==='02');
  $('ops-select-02').hidden=!m01done;
  $('ops-select-03').classList.toggle('selected',selectedMission==='03');
  $('ops-select-03').hidden=!mission02Data?.completed;
- $('ops-select-locked').hidden=!mission02Data?.completed;
+ $('ops-select-locked').hidden=!mission03Data?.completed;
+ $('ops-select-04').hidden=!mission03Data?.completed;
+ $('ops-select-04').classList.toggle('selected',selectedMission==='04');
  updateOpsObjective();renderFieldConsole(false);
 }
-for(const [id,button] of [['01','select-m01'],['02','select-m02'],['03','select-m03']]){
+for(const [id,button] of [['01','select-m01'],['02','select-m02'],['03','select-m03'],['04','select-m04']]){
  $(button).addEventListener('click',()=>{transmissionGeneration++;selectedMission=id;sessionStorage.setItem('argus_v11_mission_selected',id);closeMissionMenu();showSelectedMission();});
 }
 async function loadAssignments(){
@@ -476,7 +502,10 @@ async function loadAssignments(){
  else mission02Data=null;
  if(mission02Data?.completed)await loadMission03();
  else mission03Data=null;
- if(mission02Data?.completed&&!sessionStorage.getItem('argus_v11_mission_selected'))selectedMission='03';
+ if(mission03Data?.completed)await loadMission04();
+ else mission04Data=null;
+ if(mission03Data?.completed&&!sessionStorage.getItem('argus_v11_mission_selected'))selectedMission='04';
+ else if(mission02Data?.completed&&!sessionStorage.getItem('argus_v11_mission_selected'))selectedMission='03';
  else if(m01done&&selectedMission==='01'&&!sessionStorage.getItem('argus_v11_mission_selected'))selectedMission='02';
  showSelectedMission();
 }
@@ -583,6 +612,42 @@ $('m03-form').addEventListener('submit',async event=>{
  try{const result=await apiRequest('/missions/first-light/03/verify',{method:'POST',body:JSON.stringify({facility:$('m03-facility').value,date:$('m03-date').value,camera:$('m03-camera').value})});
   await loadMission03();await renderFieldConsole(true,result.transmission||'Evidence verified.');$('m03-feedback').textContent='PHOTO VERIFIED / MISSION COMPLETE';
  }catch(e){$('m03-feedback').textContent=e.message;}finally{$('m03-verify').disabled=false;}
+});
+
+
+// Mission 04 evidence bundle is a real ZIP archive, generated from original fictional files.
+const M04_ZIP_B64='UEsDBBQAAAAIAPV+dF2fIBbMBAEAAHsBAAARAAAAUkVBRF9NRV9GSVJTVC50eHRNj0FuhDAMRfc5hU9AzxAxUQepzUiU0s7SEzzFKiQoMSPN7Wtg01Us5/v9/09N6+ru0trOwQvofOld607wbhvfOW997cC29bnpnXlt3fVse+dV92avYL1333r1X1vb+uyM6UaCGTkKRYyBQCiMkQNjhInuAvpSDGmgAQrlB6skJqHKNAJroQKigIIzAU7LiDcSKCPr4UwypgHwUPh1vlEu8CEonCJshjnQIqUyn4XgmdYMA21GGSTpqP8zR9qvMQQqBRaMNGkipa66jsLhoC1jxqKZtjKH+wOnlYDLFhaycrM2qIw5pX0zp4Hvz52dMv9wxAnowYNWpQq+Uv4FxYa0MGnAP1BLAwQUAAAACAD1fnRdNyaE4EQAAABJAAAAHAAAAG1haW50ZW5hbmNlL3NlcnZpY2Vfbm90ZS50eHQVxdENgCAMBcB/pngbOEPFmmIaaMCHwf0HMd7PDe2zZEVtt2ID69RezqIHcouVHqMPvJ6dsF2aU+IyiUkcQfGFYX9MH1BLAwQUAAAACAD1fnRdWR/2D3kAAACzAAAAIQAAAG1haW50ZW5hbmNlL2luc3BlY3Rpb25fcmVjb3JkLmNzdlXMQQrCMBCF4b2nyAGm0AYpunSlay8gw+SBgWESMino7a0olO7e4v9eg5SWHjlR4g7SItxzMfLOffHD9TZM04niGOd1DFOkO5Tf4WKGF7k8kRZF+nXnrTvuumxeId/fUIv3WuxP4riReUdYBO6hskGDgzU0VGVZ4QdQSwMEFAAAAAgA9X50XUKuO9Z5AAAAhQAAACAAAABtYWludGVuYW5jZS9hcmNoaXZlX21hbmlmZXN0LnR4dBXMMQqDQBBG4d5T/BdQ0gW2EyO6RRRE0g/umAyss2HcQm8fA6/8ePXU9P7Vwj8cur581n6Yy9u9GCff+cFh4kgnalU+sJFoZiVdGJltE6VYDOPsm9Zh/siOK8KSdE9RAmUO4OObLFcYTd5/D+MlWdiv2Ykg68pWFT9QSwECFAMUAAAACAD1fnRdnyAWzAQBAAB7AQAAEQAAAAAAAAAAAAAAgAEAAAAAUkVBRF9NRV9GSVJTVC50eHRQSwECFAMUAAAACAD1fnRdNyaE4EQAAABJAAAAHAAAAAAAAAAAAAAAgAEzAQAAbWFpbnRlbmFuY2Uvc2VydmljZV9ub3RlLnR4dFBLAQIUAxQAAAAIAPV+dF1ZH/YPeQAAALMAAAAhAAAAAAAAAAAAAACAAbEBAABtYWludGVuYW5jZS9pbnNwZWN0aW9uX3JlY29yZC5jc3ZQSwECFAMUAAAACAD1fnRdQq471nkAAACFAAAAIAAAAAAAAAAAAAAAgAFpAgAAbWFpbnRlbmFuY2UvYXJjaGl2ZV9tYW5pZmVzdC50eHRQSwUGAAAAAAQABAAmAQAAIAMAAAAA';
+function m04ZipBytes(){const raw=atob(M04_ZIP_B64);const arr=new Uint8Array(raw.length);for(let i=0;i<raw.length;i++)arr[i]=raw.charCodeAt(i);return arr;}
+$('m04-download').addEventListener('click',()=>{const url=URL.createObjectURL(new Blob([m04ZipBytes()],{type:'application/zip'}));const a=document.createElement('a');a.href=url;a.download='greyhaven-maintenance.zip';a.click();setTimeout(()=>URL.revokeObjectURL(url),2000);});
+const M04_TOOLKIT=`# DIRECTORATE FIELD TOOLKIT / Caesar decoder
+# Paste the encoded line from service_note.txt below.
+# Run: py field_toolkit.py
+ciphertext = "PASTE THE ENCODED LINE HERE"
+for offset in range(26):
+    result = ""
+    for char in ciphertext.upper():
+        if "A" <= char <= "Z":
+            result += chr((ord(char) - ord("A") - offset) % 26 + ord("A"))
+        else:
+            result += char
+    print(f"Offset {offset:2}: {result}")
+`;
+$('m04-toolkit').addEventListener('click',()=>downloadMissionFile('field_toolkit.py',M04_TOOLKIT,'text/x-python'));
+async function loadMission04(){
+ $('m04-feedback').textContent='Retrieving maintenance archive status...';
+ try{mission04Data=await apiRequest('/missions/first-light/04');
+  $('m04-status').textContent=mission04Data.completed?'MISSION COMPLETE':'ACTIVE / DEAD DROP';
+  $('m04-active').hidden=mission04Data.completed;$('m04-complete').hidden=!mission04Data.completed;
+  const log=$('m04-evidence');log.replaceChildren();addEvidence(log,'RECOVERED ARCHIVE / GH-MAINT-07','Maintenance export recovered at Greyhaven Relay Annex.');
+  if(mission04Data.completed)addEvidence(log,'FIELD RECOVERY / PANEL SEVEN','Handwritten note: If the records disagree, trust the original.');
+  $('m04-feedback').textContent='';updateOpsObjective();renderFieldConsole(false);
+ }catch(e){$('m04-feedback').textContent=e.message;}
+}
+$('m04-form').addEventListener('submit',async event=>{
+ event.preventDefault();$('m04-verify').disabled=true;$('m04-feedback').textContent='AUTHENTICATING FIELD INSTRUCTIONS...';
+ try{const result=await apiRequest('/missions/first-light/04/verify',{method:'POST',body:JSON.stringify({panel:$('m04-panel-input').value,phrase:$('m04-phrase').value})});
+  await loadMission04();await renderFieldConsole(true,result.transmission||'Field report verified.');$('m04-feedback').textContent='ASSIGNMENT CONCLUDED / REPORT FILED';
+ }catch(e){$('m04-feedback').textContent=e.message;}finally{$('m04-verify').disabled=false;}
 });
 
 async function restoreSession(){
