@@ -93,7 +93,7 @@ main{max-width:1650px}.panel{background:linear-gradient(145deg,#0c2637f2,#061724
 <main><div class="topline"><div><div class="eyebrow">Operations / Technical advisory</div><h1 id="heading">Communications</h1></div><div class="code">NODE SD-01 / AUTHENTICATED TERMINAL</div></div>
 <div id="communications" class="dashboard"><section class="panel"><div class="panelhead"><strong>ARGUS / ADVISORY CHANNEL</strong><div class="inline-tools"><span id="connection-status" class="code">STANDBY</span><button id="new-conversation" class="button secondary small">NEW CONVERSATION</button></div></div><div class="chat" id="chat" role="log" aria-label="ARGUS conversation" aria-live="polite"></div><form id="chat-form" class="compose"><textarea id="chat-input" maxlength="3000" placeholder="ENTER TRANSMISSION..." aria-label="Message to ARGUS" required></textarea><button id="chat-send" class="button" type="submit">TRANSMIT ↗</button></form><div class="below-compose"><span id="chat-feedback" class="code" role="status"></span><span class="code">ENTER TO SEND · SHIFT+ENTER FOR NEW LINE</span></div></section><div class="sidecards"><section class="panel"><div class="panelhead"><strong>ARGUS CORE</strong><span class="code">A-01</span></div><div class="diagram"><div class="rings"></div></div><div class="metric"><div class="eyebrow">Agency Research &amp; Guidance Utility System</div><h3>TECHNICAL ADVISOR / ONLINE</h3><p>Ask about operating systems, files, networks, tools, errors, investigations, or programming.</p></div></section><section class="panel"><div class="panelhead"><strong>OPERATIONAL STATUS</strong></div><div class="metric"><div class="eyebrow">Assignment queue</div><h3 id="assignment-queue-title">CHECKING DIRECTIVES</h3><p id="assignment-queue-detail">Retrieving assignment status.</p></div></section><div class="notice">SECURITY NOTICE: DO NOT TRANSMIT PASSWORDS, API KEYS OR PERSONAL INFORMATION.</div></div></div>
 <section id="personnel" class="panel" hidden><div class="panelhead"><strong>PERSONNEL / AGENT ROSTER</strong><span class="code">DIRECTOR CLEARANCE</span></div><div class="personnel-toolbar"><button id="invite-agent" class="button">✉ INVITE AGENT</button><span id="personnel-feedback" class="code"></span><button id="add-agent" class="button">+ REGISTER AGENT</button></div><div class="mission-content" style="padding-top:0"><details class="ops-archive"><summary>✉ RECRUITMENT INVITATION LOG</summary><div id="invitation-log" class="code" role="status">Loading invitations…</div></details></div><div class="table-wrap"><table><thead><tr><th>OPERATIVE ID</th><th>DISPLAY NAME</th><th>STATUS</th><th>ACTIONS</th></tr></thead><tbody id="agent-rows"></tbody></table></div></section>
-<div id="ops-layout" class="ops-layout" hidden><div id="ops-main" class="ops-main"><div id="ops-objective" class="ops-objective"><div class="eyebrow">CURRENT OBJECTIVE</div><strong id="ops-objective-text">Retrieving assignment...</strong><div class="code" id="ops-objective-detail"></div></div><div id="mission-selector" class="mission-nav" hidden><div class="mission-nav-top"><div><div class="eyebrow">SELECTED ASSIGNMENT</div><strong id="mission-current-label">01 — THE NEW RECRUIT</strong></div><button id="mission-menu-toggle" type="button" class="button secondary small" aria-expanded="false" aria-controls="mission-menu">MISSION LIST ▾</button></div><div id="mission-menu" class="mission-menu" hidden><button id="select-m01" type="button" class="button secondary">01 — THE NEW RECRUIT</button><button id="select-m02" type="button" class="button secondary" hidden>02 — NUMBERS STATION</button><button id="select-m03" type="button" class="button secondary" hidden>03 — THE PHOTOGRAPH</button><button id="select-m04" type="button" class="button secondary" hidden>04 — DEAD DROP</button><button id="select-m05" type="button" class="button secondary" hidden>05 — FALSE TRAIL</button><button id="select-m06" type="button" class="button secondary" hidden>06 — THE LAST TRANSMISSION</button></div></div>
+<div id="ops-layout" class="ops-layout" hidden><div id="ops-main" class="ops-main"><section id="progression-card" class="panel" hidden><div class="panelhead"><strong id="progression-title"></strong></div><div class="mission-content"><div id="progression-copy" aria-live="polite"></div><button class="button" id="progression-next" type="button">REVIEW NEXT ASSIGNMENT</button><button class="button secondary" id="progression-review" type="button">REVIEW COMPLETED MISSION</button></div></section><button id="assignment-ack" class="button" type="button" hidden>ACKNOWLEDGE NEW ASSIGNMENT</button><div id="ops-objective" class="ops-objective"><div class="eyebrow">CURRENT OBJECTIVE</div><strong id="ops-objective-text">Retrieving assignment...</strong><div class="code" id="ops-objective-detail"></div></div><div id="mission-selector" class="mission-nav" hidden><div class="mission-nav-top"><div><div class="eyebrow">SELECTED ASSIGNMENT</div><strong id="mission-current-label">01 — THE NEW RECRUIT</strong></div><button id="mission-menu-toggle" type="button" class="button secondary small" aria-expanded="false" aria-controls="mission-menu">MISSION LIST ▾</button></div><div id="mission-menu" class="mission-menu" hidden><button id="select-m01" type="button" class="button secondary">01 — THE NEW RECRUIT</button><button id="select-m02" type="button" class="button secondary" hidden>02 — NUMBERS STATION</button><button id="select-m03" type="button" class="button secondary" hidden>03 — THE PHOTOGRAPH</button><button id="select-m04" type="button" class="button secondary" hidden>04 — DEAD DROP</button><button id="select-m05" type="button" class="button secondary" hidden>05 — FALSE TRAIL</button><button id="select-m06" type="button" class="button secondary" hidden>06 — THE LAST TRANSMISSION</button></div></div>
 <section id="assignments-panel" class="panel" hidden><div class="panelhead"><strong>OPERATIONS / FIRST LIGHT</strong><span id="mission-status" class="code">AWAITING BRIEFING</span></div><div class="mission-content"><div class="eyebrow">OPERATION FIRST LIGHT · MISSION 01</div><h2>The New Recruit</h2><div class="transmission"><strong>ARGUS — INITIAL BRIEFING</strong><p>Welcome to Signals Division, Agent. Before you can assist Kestrel in the field, we must verify your workstation. You will install two legitimate development tools, run a diagnostic on your own computer, and return its activation response. I can guide you, but only you can operate your computer.</p></div><div id="mission-complete" hidden><div class="transmission"><strong>WORKSTATION VERIFIED — MISSION COMPLETE</strong><p>KESTREL: Good. You're online. I've just received something rather strange from Station 17. Stand by for your next assignment.</p><p>Mission 02 — Numbers Station is now available below.</p></div></div><div id="mission-active"><h3>Workstation setup</h3><div class="mission-step"><strong>1. Install Python</strong><p>Download Python from <a href="https://www.python.org/downloads/" target="_blank" rel="noopener noreferrer">python.org</a>. On Windows, make sure the Python launcher is installed. Open PowerShell and try <code>py --version</code> (or <code>python --version</code>).</p></div><div class="mission-step"><strong>2. Install VS Code</strong><p>Download Visual Studio Code from <a href="https://code.visualstudio.com/" target="_blank" rel="noopener noreferrer">code.visualstudio.com</a>. Create a folder named <code>STRATA</code> inside Documents, then a <code>Mission-01</code> folder inside it.</p></div><div class="mission-step"><strong>3. Download your diagnostic package</strong><p>Save both mission files into <code>Documents\STRATA\Mission-01</code>. Do not move the Python or VS Code installers here. The activation file is unique to your Agent account.</p><div class="mission-actions"><button class="button" id="download-diagnostic" type="button">DOWNLOAD DIAGNOSTIC.PY</button><button class="button secondary" id="download-challenge" type="button">DOWNLOAD ACTIVATION.TXT</button></div></div><div class="mission-step"><strong>4. Run the diagnostic</strong><p>Open <code>workstation_diagnostic.py</code> in VS Code. Open its terminal, make sure the terminal is in the same folder as both files, and run:</p><pre><code>py workstation_diagnostic.py</code></pre><p>If <code>py</code> isn't recognized, try <code>python workstation_diagnostic.py</code>. Ask ARGUS for help if anything goes wrong.</p></div><div class="mission-step"><strong>5. Transmit activation response</strong><p>Copy the 64-character response printed by your Python program and paste it below.</p><form id="mission-form"><label class="field-label" for="activation-response">ACTIVATION RESPONSE</label><input id="activation-response" class="mission-input" maxlength="64" autocomplete="off" spellcheck="false" required placeholder="Paste diagnostic output here"><div class="mission-actions"><button class="button" id="mission-verify" type="submit">VERIFY WORKSTATION</button></div></form><div id="mission-feedback" class="code" role="status"></div></div></div></div></section>
 
 <section id="mission02-panel" class="panel" hidden><div class="panelhead"><strong>FIRST LIGHT / MISSION 02 — NUMBERS STATION</strong><span id="m02-status" class="code">INTERCEPT PENDING</span></div><div class="mission-content"><h2>Numbers Station</h2><div class="transmission" id="m02-old-transmission" hidden><strong>KESTREL / FIELD COMMUNICATIONS</strong><p id="m02-transmission">I've picked up a coded radio signal near Station 17. I need you to identify what it says.</p></div><div id="m02-active"><div class="signal-panel"><div class="eyebrow">INTERCEPT MONITOR / RECORDED SIGNAL</div><div class="signal-bars" aria-hidden="true"><i style="height:14px"></i><i style="height:27px"></i><i style="height:43px"></i><i style="height:20px"></i><i style="height:60px"></i><i style="height:37px"></i><i style="height:18px"></i><i style="height:65px"></i><i style="height:33px"></i><i style="height:55px"></i><i style="height:26px"></i><i style="height:42px"></i><i style="height:70px"></i><i style="height:20px"></i><i style="height:47px"></i><i style="height:36px"></i><i style="height:59px"></i><i style="height:22px"></i><i style="height:44px"></i><i style="height:17px"></i><i style="height:52px"></i><i style="height:30px"></i><i style="height:66px"></i><i style="height:25px"></i><i style="height:41px"></i><i style="height:57px"></i><i style="height:19px"></i><i style="height:35px"></i><i style="height:50px"></i><i style="height:23px"></i></div><div class="code">SIGNAL CLASS: ENCODED ALPHABETIC TRANSMISSION</div></div><h3>Intercept transcript</h3><pre class="mission-block" id="m02-intercept"></pre><p>The signal uses a <strong>Caesar cipher</strong>: each letter has been moved forward by the same number of positions. Download the decoder, open it in VS Code, and change the <code>offset</code> variable. Run it locally until the message makes sense.</p><div class="mission-actions"><button class="button" id="m02-download" type="button">DOWNLOAD DECODER.PY</button><button class="button secondary" id="m02-transcript-download" type="button">DOWNLOAD INTERCEPT.TXT</button></div><div class="mission-step"><strong>Run the decoder</strong><pre><code>py decoder.py</code></pre><p>Try different values for <code>offset</code> from 1 to 25. When you see readable English, copy the entire decoded line below. Ask ARGUS for hints if needed.</p></div><form id="m02-form"><label class="field-label" for="m02-answer">DECODED TRANSMISSION</label><input id="m02-answer" class="mission-input" maxlength="160" autocomplete="off" spellcheck="false" required placeholder="Enter the entire decoded message"><div class="mission-actions"><button class="button" id="m02-verify" type="submit">TRANSMIT FINDINGS TO KESTREL</button></div></form></div><div id="m02-complete" hidden><div class="ops-next"><strong>MISSION COMPLETE / BOTH INTERCEPTS VERIFIED</strong><p>Further orders will be issued through Field Communications.</p></div></div><div class="code" id="m02-feedback" role="status"></div><div id="m02-evidence" class="evidence-log"></div></div></section>
@@ -195,6 +195,7 @@ async function apiRequest(path,options={}){
   return data;
 }
 function showLogin(message=''){
+ assignmentStatus=null;
   sessionEpoch++;
   sessionToken=null;currentUser=null;orientationActive=false;$('portal').inert=false;document.body.classList.remove('orientation-active');$('orientation-layer').hidden=true;
   sessionStorage.removeItem(SESSION_KEY);
@@ -234,7 +235,7 @@ async function navigate(page){
    if(page==='assignments'&&currentUser?.role!=='agent')return;
   if(orientationActive && !orientationInternalNavigation)return;
   currentPage=page;updateCompanionContext();
-  if(page==='assignments')document.querySelector('#nav button[data-page="assignments"]').classList.remove('assignment-attention');
+  $('progression-card').hidden=true;
   document.querySelectorAll('#nav button[data-page]').forEach(button=>button.classList.toggle('active',button.dataset.page===page));
   $('communications').hidden=page!=='communications';$('personnel').hidden=page!=='personnel';$('assignments-panel').hidden=page!=='assignments';$('mission02-panel').hidden=true;$('mission03-panel').hidden=true;$('mission-selector').hidden=true;$('ops-layout').hidden=page!=='assignments';$('ops-nav').hidden=page!=='assignments';$('mission-menu').hidden=true;$('mission-menu-toggle').setAttribute('aria-expanded','false');$('other').hidden=true;$('toolkit-page').hidden=page!=='toolkit';$('archive-page').hidden=page!=='archive';$('systems-page').hidden=page!=='systems';$('field-toolkit').hidden=true;
   const names={communications:'Communications',personnel:'Personnel',assignments:'Assignments',archive:'Intelligence Archive',toolkit:'Field Toolkit',systems:'Systems'};
@@ -508,7 +509,7 @@ $('mission-form').addEventListener('submit',async event=>{
     const data=await apiRequest('/missions/first-light/01/verify',{
       method:'POST',body:JSON.stringify({response:$('activation-response').value.trim()})
     });
-    if(data.completed)await loadMission01();
+    if(data.completed){await loadMission01();await missionConcluded("01",data.transmission);}
   }catch(error){$('mission-feedback').textContent=error.message;}
   finally{$('mission-verify').disabled=false;}
 });
@@ -632,6 +633,7 @@ evidenceDetails.append(evidenceSummary,$('m02-evidence'));$('mission02-panel').q
 function closeMissionMenu(){ $('mission-menu').hidden=true;$('mission-menu-toggle').setAttribute('aria-expanded','false'); }
 $('mission-menu-toggle').addEventListener('click',()=>{const next=!$('mission-menu').hidden;$('mission-menu').hidden=next;$('mission-menu-toggle').setAttribute('aria-expanded',String(!next));});
 function showSelectedMission(){
+ $('progression-card').hidden=true;$('ops-objective').hidden=false;
  const m01done=!$('mission-complete').hidden;
  if(!m01done)selectedMission='01';
  if(selectedMission==='06'&&!mission05Data?.completed)selectedMission='05';
@@ -675,18 +677,46 @@ function showSelectedMission(){
  $('ops-select-04').classList.toggle('selected',selectedMission==='04');
  $('ops-select-05').hidden=!mission04Data?.completed;
  $('ops-select-05').classList.toggle('selected',selectedMission==='05');
- updateOpsObjective();renderFieldConsole(false);
+ updateOpsObjective();renderFieldConsole(false);showAcknowledgment();
 }
 for(const [id,button] of [['01','select-m01'],['02','select-m02'],['03','select-m03'],['04','select-m04'],['05','select-m05'],['06','select-m06']]){
  $(button).addEventListener('click',()=>{transmissionGeneration++;selectedMission=id;updateCompanionContext();sessionStorage.setItem('argus_v11_mission_selected',id);closeMissionMenu();showSelectedMission();});
 }
 const FIRST_LIGHT_TITLES={'01':'The New Recruit','02':'Numbers Station','03':'The Photograph','04':'Dead Drop','05':'False Trail','06':'The Last Transmission'};
-function updateAssignmentQueue(){
- if(currentUser?.role!=='agent')return;
- const completed=selectedMission==='06'&&Boolean(mission06Data?.completed);
- $('assignment-queue-title').textContent=completed?'FIRST LIGHT / COMPLETE':'FIRST LIGHT / MISSION '+selectedMission;
- $('assignment-queue-detail').textContent=completed?'All currently issued assignments are complete. Await further instructions.':'Your assignment, '+FIRST_LIGHT_TITLES[selectedMission]+', is available. Open the ASSIGNMENTS tab to review your briefing.';
+let assignmentStatus=null;
+async function updateAssignmentQueue(){
+ if(currentUser?.role!=='agent'||orientationActive)return;
+ const epoch=sessionEpoch;
+ try{
+ const state=await apiRequest('/assignments/status');if(epoch!==sessionEpoch)return;
+ assignmentStatus=state;
+ const nav=document.querySelector('#nav button[data-page="assignments"]');
+ nav.classList.toggle('assignment-attention',state.unread);
+ nav.innerHTML='<span>◇</span> ASSIGNMENTS'+(state.unread?' / NEW':'');
+ $('assignment-queue-title').textContent=state.active?'FIRST LIGHT / MISSION '+state.active:'FIRST LIGHT / COMPLETE';
+ $('assignment-queue-detail').textContent=state.active?(state.unread?'ARGUS: New directive received. Open ASSIGNMENTS and acknowledge '+FIRST_LIGHT_TITLES[state.active]+'.':'Active assignment: '+FIRST_LIGHT_TITLES[state.active]+'. Open ASSIGNMENTS to continue.'):'All FIRST LIGHT assignments are complete. Stand by for further directives.';
+ if(currentPage==='assignments'&&$('progression-card').hidden)showAcknowledgment();
+ }catch(e){if(epoch===sessionEpoch)$('assignment-queue-detail').textContent='Assignment status unavailable. Reopen Assignments to retry.';}
 }
+function showAcknowledgment(){
+ const button=$('assignment-ack');button.hidden=!(assignmentStatus?.unread&&assignmentStatus.active===selectedMission&&!orientationActive);
+}
+async function missionConcluded(id,transmission){
+ if(currentPage!=='assignments')return;
+ await updateAssignmentQueue();
+ if(currentPage!=='assignments')return;
+ const card=$('progression-card');card.hidden=false;
+ for(const panel of ['assignments-panel','mission02-panel','mission03-panel','mission04-panel','mission05-panel','mission06-panel'])$(panel).hidden=true;
+ $('ops-objective').hidden=true;$('assignment-ack').hidden=true;
+ $('progression-title').textContent=id==='06'?'OPERATION FIRST LIGHT COMPLETE':'MISSION '+id+' COMPLETE';
+ $('progression-next').hidden=id==='06';
+ const message=(transmission||'Operations has verified your report.')+'\n\n'+(id==='06'?'DEBRIEF: Voss was alive when recorded. NIGHTGLASS has been reactivated. The recovered storage device is a new lead. Stand by for Operation GHOSTWIRE.':'ARGUS: Your report is accepted. Review your next assignment to continue.');
+ $('progression-copy').style.whiteSpace='pre-wrap';card.scrollIntoView({block:'start'});await revealTransmission($('progression-copy'),message);
+}
+$('progression-next').addEventListener('click',async()=>{await updateAssignmentQueue();if(!assignmentStatus?.active)return;selectedMission=assignmentStatus.active;sessionStorage.setItem('argus_v11_mission_selected',selectedMission);await loadAssignments();});
+$('progression-review').addEventListener('click',()=>showSelectedMission());
+$('assignment-ack').addEventListener('click',async()=>{try{await apiRequest('/assignments/acknowledge',{method:'POST',body:JSON.stringify({mission:selectedMission})});await updateAssignmentQueue();}catch(e){$('assignment-ack').textContent='ACKNOWLEDGMENT FAILED — RETRY';}});
+setInterval(()=>{if(sessionToken&&currentUser?.role==='agent'&&!orientationActive)updateAssignmentQueue();},30000);
 async function loadAssignments(){
  await loadMission01();
  const m01done=!$('mission-complete').hidden;
@@ -705,7 +735,7 @@ async function loadAssignments(){
  else if(mission03Data?.completed&&!sessionStorage.getItem('argus_v11_mission_selected'))selectedMission='04';
  else if(mission02Data?.completed&&!sessionStorage.getItem('argus_v11_mission_selected'))selectedMission='03';
  else if(m01done&&selectedMission==='01'&&!sessionStorage.getItem('argus_v11_mission_selected'))selectedMission='02';
- showSelectedMission();updateAssignmentQueue();
+ showSelectedMission();await updateAssignmentQueue();
 }
 async function loadMission02(){
  $('m02-feedback').textContent='Retrieving signal...';
@@ -731,7 +761,7 @@ async function loadMission02(){
    }
   }
   $('m02-feedback').textContent='';
-  updateOpsObjective();renderFieldConsole(false);
+  updateOpsObjective();renderFieldConsole(false);showAcknowledgment();
  }catch(e){$('m02-feedback').textContent=e.message;}
 }
 const M02_DECODER=`# STRATA / SIGNALS DIVISION — DECODER
@@ -765,7 +795,7 @@ $('m02-form').addEventListener('submit',async event=>{
   await loadMission02();
   await renderFieldConsole(true,result.transmission||'Transmission verified.');
   if(!result.completed){$('m02-feedback').textContent='INTERCEPT 01 VERIFIED. INTERCEPT 02 IS READY — DOWNLOAD THE NEW FILE BELOW.';}
-  else {$('m02-feedback').textContent='MISSION COMPLETE / BOTH INTERCEPTS VERIFIED';}
+  else {await missionConcluded('02',result.transmission);}
  }catch(e){$('m02-feedback').textContent=e.message;}
  finally{$('m02-verify').disabled=false;}
 });
@@ -807,13 +837,13 @@ async function loadMission03(){
   for(const f of facilities){const card=document.createElement('div');card.className='m03-location';const name=document.createElement('strong');name.textContent='◇ '+f.name;const coord=document.createElement('span');coord.className='code';coord.textContent=f.lat.toFixed(4)+'° N, '+f.lon.toFixed(4)+'° E';card.append(name,coord);map.append(card);}
   const log=$('m03-evidence');log.replaceChildren();addEvidence(log,'EVIDENCE ITEM / PHOTO-0042','Original JPEG recovered from Voss vehicle. EXIF metadata retained.');
   if(data.completed)addEvidence(log,'KESTREL / FIELD TRANSMISSION','Greyhaven Relay Annex. I am going to take a look.');
-  $('m03-feedback').textContent='';updateOpsObjective();renderFieldConsole(false);
+  $('m03-feedback').textContent='';updateOpsObjective();renderFieldConsole(false);showAcknowledgment();
  }catch(e){$('m03-feedback').textContent=e.message;}
 }
 $('m03-form').addEventListener('submit',async event=>{
  event.preventDefault();$('m03-verify').disabled=true;$('m03-feedback').textContent='TRANSMITTING / VERIFYING...';
  try{const result=await apiRequest('/missions/first-light/03/verify',{method:'POST',body:JSON.stringify({facility:$('m03-facility').value,date:$('m03-date').value,camera:$('m03-camera').value})});
-  await loadMission03();await renderFieldConsole(true,result.transmission||'Evidence verified.');$('m03-feedback').textContent='PHOTO VERIFIED / MISSION COMPLETE';
+  await loadMission03();await renderFieldConsole(true,result.transmission||'Evidence verified.');if(result.completed)await missionConcluded('03',result.transmission);
  }catch(e){$('m03-feedback').textContent=e.message;}finally{$('m03-verify').disabled=false;}
 });
 
@@ -843,13 +873,13 @@ async function loadMission04(){
   $('m04-active').hidden=mission04Data.completed;$('m04-complete').hidden=!mission04Data.completed;
   const log=$('m04-evidence');log.replaceChildren();addEvidence(log,'RECOVERED ARCHIVE / GH-MAINT-07','Maintenance export recovered at Greyhaven Relay Annex.');
   if(mission04Data.completed)addEvidence(log,'FIELD RECOVERY / PANEL SEVEN','Handwritten note: If the records disagree, trust the original.');
-  $('m04-feedback').textContent='';updateOpsObjective();renderFieldConsole(false);
+  $('m04-feedback').textContent='';updateOpsObjective();renderFieldConsole(false);showAcknowledgment();
  }catch(e){$('m04-feedback').textContent=e.message;}
 }
 $('m04-form').addEventListener('submit',async event=>{
  event.preventDefault();$('m04-verify').disabled=true;$('m04-feedback').textContent='AUTHENTICATING FIELD INSTRUCTIONS...';
  try{const result=await apiRequest('/missions/first-light/04/verify',{method:'POST',body:JSON.stringify({panel:$('m04-panel-input').value,phrase:$('m04-phrase').value})});
-  await loadMission04();await renderFieldConsole(true,result.transmission||'Field report verified.');$('m04-feedback').textContent='ASSIGNMENT CONCLUDED / REPORT FILED';
+  await loadMission04();await renderFieldConsole(true,result.transmission||'Field report verified.');if(result.completed)await missionConcluded('04',result.transmission);
  }catch(e){$('m04-feedback').textContent=e.message;}finally{$('m04-verify').disabled=false;}
 });
 
@@ -891,13 +921,13 @@ async function loadMission05(){
   $('m05-active').hidden=mission05Data.completed;$('m05-complete').hidden=!mission05Data.completed;
   const log=$('m05-evidence');log.replaceChildren();addEvidence(log,'PRIMARY ARCHIVE','Original sensor export and consolidated movement report, Greyhaven Relay Annex.');
   if(mission05Data.completed)addEvidence(log,'ROOK / RECONCILIATION','Consolidated report altered; original departure route confirmed.');
-  $('m05-feedback').textContent='';updateOpsObjective();renderFieldConsole(false);
+  $('m05-feedback').textContent='';updateOpsObjective();renderFieldConsole(false);showAcknowledgment();
  }catch(e){$('m05-feedback').textContent=e.message;}
 }
 $('m05-form').addEventListener('submit',async event=>{
  event.preventDefault();$('m05-verify').disabled=true;$('m05-feedback').textContent='RECONCILING PRIMARY RECORDS...';
  try{const result=await apiRequest('/missions/first-light/05/verify',{method:'POST',body:JSON.stringify({record:$('m05-record').value,route:$('m05-route').value})});
-  await loadMission05();await renderFieldConsole(true,result.transmission||'Analysis verified.');$('m05-feedback').textContent='ASSIGNMENT CONCLUDED / REPORT FILED';
+  await loadMission05();await renderFieldConsole(true,result.transmission||'Analysis verified.');if(result.completed)await missionConcluded('05',result.transmission);
  }catch(e){$('m05-feedback').textContent=e.message;}finally{$('m05-verify').disabled=false;}
 });
 
@@ -937,7 +967,7 @@ async function loadMission06(){
   if(d.stage>=2)addEvidence(log,'ACCESS SEQUENCE','Authenticated / Recorder bank unlocked');
   if(d.stage>=3)addEvidence(log,'RECORDING INDEX','Original recording authenticated');
   if(d.completed)addEvidence(log,'STRATA FINAL REPORT','Voss confirmed alive at time of transmission; NIGHTGLASS reactivated.');
-  $('m06-feedback').textContent='';updateOpsObjective();renderFieldConsole(false);
+  $('m06-feedback').textContent='';updateOpsObjective();renderFieldConsole(false);showAcknowledgment();
  }catch(e){$('m06-feedback').textContent=e.message;}
 }
 $('m06-original').addEventListener('click',()=>downloadMissionFile('station17_original_index.csv',M06_ORIGINAL,'text/csv'));
@@ -950,7 +980,7 @@ for(let stage=1;stage<=3;stage++)$('m06-form'+stage).addEventListener('submit',a
  const body={step:stage};body[stage===1?'sequence':stage===2?'recording':'phrase']=$('m06-'+(stage===1?'sequence':stage===2?'recording':'phrase')).value;
  try{const result=await apiRequest('/missions/first-light/06/verify',{method:'POST',body:JSON.stringify(body)});
   await loadMission06();await renderFieldConsole(true,result.transmission||'Evidence verified.');
-  if(result.completed)$('m06-feedback').textContent='OPERATION FIRST LIGHT / FINAL REPORT FILED';
+  if(result.completed)await missionConcluded('06',result.transmission);
  }catch(e){$('m06-feedback').textContent=e.message;}finally{button.disabled=false;}
 });
 
@@ -980,7 +1010,7 @@ const orientationSteps=[
 let orientationIndex=0,orientationActive=false,orientationSaving=false,orientationInternalNavigation=false;
 function clearOrientationFocus(){document.querySelectorAll('.orientation-focus').forEach(el=>el.classList.remove('orientation-focus'));}
 async function checkOrientation(){
- try{const data=await apiRequest('/orientation');if(!data.completed)await startOrientation();else {await navigate('assignments');updateAssignmentQueue();await navigate('communications');$('argus-launch').hidden=false;}}
+ try{const data=await apiRequest('/orientation');if(!data.completed)await startOrientation();else {await navigate('assignments');await updateAssignmentQueue();await navigate('communications');$('argus-launch').hidden=false;}}
  catch(error){console.warn('Orientation status unavailable:',error.message);await startOrientation();$('orientation-error').textContent='Unable to verify orientation status. Completion will require a connection.';}
 }
 async function startOrientation(){orientationIndex=0;orientationActive=true;document.body.classList.add('orientation-active');$('portal').inert=true;$('orientation-layer').hidden=false;await showOrientationStep();}
@@ -1007,7 +1037,7 @@ $('orientation-next').addEventListener('click',async()=>{
  if(orientationSaving)return;
  if(orientationIndex<orientationSteps.length-1){orientationIndex++;await showOrientationStep();return;}
  orientationSaving=true;$('orientation-next').disabled=true;
- try{await apiRequest('/orientation/complete',{method:'POST',body:'{}'});orientationActive=false;$('portal').inert=false;document.body.classList.remove('orientation-active');$('orientation-layer').hidden=true;clearOrientationFocus();await navigate('assignments');updateAssignmentQueue();await navigate('communications');document.querySelector('#nav button[data-page="assignments"]').classList.add('assignment-attention');$('argus-launch').hidden=false;}
+ try{await apiRequest('/orientation/complete',{method:'POST',body:'{}'});orientationActive=false;$('portal').inert=false;document.body.classList.remove('orientation-active');$('orientation-layer').hidden=true;clearOrientationFocus();await navigate('assignments');await updateAssignmentQueue();await navigate('communications');await updateAssignmentQueue();$('argus-launch').hidden=false;}
  catch(error){$('orientation-error').textContent='Unable to record acknowledgement: '+error.message;}
  finally{orientationSaving=false;$('orientation-next').disabled=false;}
 });
